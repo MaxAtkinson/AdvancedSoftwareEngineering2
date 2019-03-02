@@ -1,7 +1,7 @@
-package main;
+package view;
 
 import order.*;
-import fileManagerIO.*;
+
 import java.awt.Dimension;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
@@ -23,13 +23,12 @@ import javax.swing.tree.TreeSelectionModel;
 
 import customExceptions.InvalidProductIdentifierException;
 import customExceptions.InvalidProductPriceException;
+import model.*;
 
 
-public class Program extends JFrame {
+public class AddOrdersView extends JFrame {
 
 	//Instance Variables
-	private static String productsFileName = "Products.csv";
-	private static String ordersFileName = "Orders.csv";
 	private static FileManagerIO f;
 	private static String currentSetSelection;
 	private static Product curentListSelection;
@@ -41,25 +40,11 @@ public class Program extends JFrame {
 	private JTree menuTree;
 	private JScrollPane menuPane, orderPane;
 	private static JLabel discount, total;
-	
-
-	//Main method instantiating single instance of FileManagerIO and running GUI
-	public static void main(String[] args) throws InvalidProductPriceException, InvalidProductIdentifierException {
-		f = FileManagerIO.getInstances();
-		f.readFromProductsFile(productsFileName);
-		f.readFromOrderFile(ordersFileName);
-		b = new Basket();
-		SwingUtilities.invokeLater(new Runnable() {
-			@Override
-			public void run() {
-				new Program().setVisible(true);
-			}
-		});
-	}
-
 
 	/** Initialising GUI Defaults */
-	public Program() {
+	public AddOrdersView() {
+		f = FileManagerIO.getInstance();
+		b = new Basket();
 		createView();
 		initBtnActions();
 		setTitle("ASE Coffee Shop");
@@ -67,6 +52,7 @@ public class Program extends JFrame {
 		setSize(600, 425);
 		setLocationRelativeTo(null);
 		setResizable(false);
+		setVisible(true);
 	}
 	
 	

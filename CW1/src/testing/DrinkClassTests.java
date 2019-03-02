@@ -7,7 +7,7 @@ import org.junit.Test;
 
 import customExceptions.InvalidProductIdentifierException;
 import customExceptions.InvalidProductPriceException;
-import fileManagerIO.FileManagerIO;
+import model.FileManagerIO;
 import order.Drink;
 
 public class DrinkClassTests {

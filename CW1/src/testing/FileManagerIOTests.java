@@ -14,7 +14,7 @@ import org.junit.Test;
 
 import customExceptions.InvalidProductIdentifierException;
 import customExceptions.InvalidProductPriceException;
-import fileManagerIO.FileManagerIO;
+import model.FileManagerIO;
 import order.Order;
 import order.Product;
 
@@ -35,7 +35,7 @@ public class FileManagerIOTests {
 	@Before
 	public void setup() {
 		/* Create FileManagerIO singleton and set file paths here */
-		f = FileManagerIO.getInstances();
+		f = FileManagerIO.getInstance();
 		productsFileName = "Products.csv";
 		ordersFileName = "Orders.csv";
 		reportFileName = "Report.txt";
@@ -62,7 +62,7 @@ public class FileManagerIOTests {
 	@Test
 	public void testStore() throws IOException {
 		/* Test for confirmed basket of items written to orders file */
-		Order o = new Order((long) 1, new Product("Irn Bru","A classic scottish staple",(float) 1.99,"BEV112"), "CUS127");
+		Order o = new Order((long) 1, new Product("Irn Bru","A classic scottish staple",(float) 1.99,"BEV112"), "CUS127", 1);
 		lineCount = Files.lines(ordersPath).count()-1;
 		f.store(o);
 		newLineCount = Files.lines(ordersPath).count()-1;

@@ -9,14 +9,19 @@ public class Order {
 	private long timestamp;
 	private Product product;
 	private String custID;
+	private int priority;
 	
-	public Order(long timestamp, Product product, String custID) {
+	public Order(long timestamp, Product product, String custID, int priority) {
 		this.timestamp = timestamp;
 		this.product = product;
 		this.custID = custID;
+		this.priority = priority;
 	}
 	
 	/* Getters */
+	public int getPriority() {
+		return priority;
+	}
 	
 	public long getTimestamp() {
 		return timestamp;
@@ -30,4 +35,7 @@ public class Order {
 		return custID;
 	}
 	
+	public String toString() {
+		return custID;
+	}
 }

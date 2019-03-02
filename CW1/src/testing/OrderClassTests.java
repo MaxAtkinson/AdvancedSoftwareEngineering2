@@ -16,10 +16,10 @@ public class OrderClassTests {
 	private long timestamp = 19011535;
 	private Product product = p;
 	private String custID= "CUS111" ;
-	
+	private int priority = 1;
 	@Before
 	public void setup(){
-	o = new Order (timestamp, product, custID);
+	o = new Order (timestamp, product, custID, priority);
 	}
 	
 	@Test

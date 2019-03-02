@@ -8,7 +8,7 @@ import org.junit.Test;
 
 import customExceptions.InvalidProductIdentifierException;
 import customExceptions.InvalidProductPriceException;
-import fileManagerIO.FileManagerIO;
+import model.FileManagerIO;
 import order.Drink;
 import order.Food;
 import order.Memoribilia;
@@ -25,7 +25,7 @@ public class ExceptionsTests {
 
 	@Before
 	public void setup() {
-		f = FileManagerIO.getInstances();
+		f = FileManagerIO.getInstance();
 		productsFileName = "ProductsTestException.csv";
 		menuPath = Paths.get(productsFileName);
 	}
