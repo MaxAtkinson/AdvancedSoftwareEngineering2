@@ -36,6 +36,6 @@ public class Order {
 	}
 	
 	public String toString() {
-		return custID;
+		return custID + " " + product.getId();
 	}
 }

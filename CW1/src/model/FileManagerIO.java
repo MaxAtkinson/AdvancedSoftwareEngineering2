@@ -34,7 +34,9 @@ public class FileManagerIO implements Runnable {
 
 	private ArrayList<Order> processedOrders = new ArrayList<>();
 	private Set<Product> products = new HashSet<Product>();
-	public Queue<Order> customerQueue = new LinkedList<>(); 
+	public LinkedList<Order> customerQueue = new LinkedList<>(); 
+	private int endOfPriorityIndex = 0;
+	private long lastCustID = 0;
 
 	/* Getters are used in Junit tests to ensure the effectiveness of private methods elsewhere in the class. */
 	public int getSizeOfExistingOrders() 
@@ -109,6 +111,7 @@ public class FileManagerIO implements Runnable {
 				inputLine = scanner.nextLine();
 				processOrderLine(inputLine);
 			}
+			setLastCustomerID();
 			scanner.close();
 		}
 		catch (FileNotFoundException e) {
@@ -141,64 +144,80 @@ public class FileManagerIO implements Runnable {
 		try {
 			Scanner scanner = new Scanner(file);
 			String inputLine = scanner.nextLine(); // skip headers line
-			// reset list of orders to prevent repeating info on each file read
-			processedOrders = new ArrayList<>();
+			int priority = 0; 
+			ArrayList<Product> oneWholeOrder = new ArrayList<>();
 			while (scanner.hasNextLine()) {
 				inputLine = scanner.nextLine();
-				processNewOrderLine(inputLine);
+				if (inputLine.isEmpty()) {
+					// one customer order finished
+					addOrderToQueue(priority, oneWholeOrder);
+					oneWholeOrder = new ArrayList<>();
+				} else {
+					String part[] = inputLine.split(",");
+					Product product = findProduct(part[0]);
+					priority = Integer.parseInt(part[1]);
+					oneWholeOrder.add(product);
+				}
 			}
+			// add final order in file if there is not an empty line at end
+			addOrderToQueue(priority, oneWholeOrder);
 			scanner.close();
 		}
 		catch (FileNotFoundException e) {
 			System.out.print("File: " + fileName + " cannot be found.");
 		}
 	}
-
-	/* Takes in lines from the CSV and creates objects of type Order placing them in the ArrayList existing orders.*/
-	private void processNewOrderLine(String inputLine) {
-		try {
-			String part[] = inputLine.split(",");
-			Product product = findProduct(part[1]);
-			String custID = part[0];
-			int priority = Integer.parseInt(part[2]);
-			Order o = new Order(0, product, custID, priority);
-			customerQueue.add(o);
-		}
-		catch(NumberFormatException ex) {
-			ex.printStackTrace();
+	
+	private void addOrderToQueue(int priority, ArrayList<Product> pList) {
+		if (!pList.isEmpty()) {
+			Date date = new Date();
+			long timeStamp = date.getTime();
+			String customerID = "CUS" + lastCustID;
+			lastCustID++;
+			for (Product p : pList) {
+				Order o = new Order(timeStamp, p, customerID, priority);
+				if (priority == 1) {
+					customerQueue.add(endOfPriorityIndex, o); // insert after online orders
+					endOfPriorityIndex++;
+				} else {
+					customerQueue.add(o); // add at end
+				}
+			}
 		}
 	}
 
 	/* Creates a new customer idea for new orders passed from the GUI.*/
-	private String createCustomerID() {
-		if (processedOrders.size()==0) {
-			return "CUS" + 1;
+	private void setLastCustomerID() {
+		if (processedOrders.size()!=0) {
+			Order lastOrder = processedOrders.get(processedOrders.size()-1);
+			String lastCustomerID = lastOrder.getCustID();
+			lastCustID = Long.parseLong(lastCustomerID.substring(3));
+			lastCustID++;
 		}
-		Order lastOrder = processedOrders.get(processedOrders.size()-1);
-		String lastCustomerID = lastOrder.getCustID();
-		long lastCustomerNum = Long.parseLong(lastCustomerID.substring(3));
-		long newCustomerNum = lastCustomerNum + 1;
-		String newCustomerStr = Long.toString(newCustomerNum);
-		return "CUS" + newCustomerStr;
 	}
 
 	/* Adds new orders to the existing orders array list passed from the GUI*/
+	//////////////////////////////////////////////////////////////
+	/////////////////////////////////////////////////////////////
+	// TODO REFACTOR/REMOVE BECAUSE ORDERS ARE NOT PROCESSED IMMEDIATELY ANYMORE - NEEDS TO ADD TO QUEUE
 	public void addCurrentOrder(ArrayList<Product> pList) {
 		Date date = new Date();
 		long timeStamp = date.getTime();
-		String customerID = createCustomerID();
+		String customerID = "CUS" + lastCustID;
+		lastCustID++;
 		for (Product p : pList) {
 			Order o = new Order(timeStamp, p, customerID, 0);
 			//TODO In GUI check if adding priority customer.
 			try {
 				store(o);
 				processedOrders.add(o);
-				System.out.println(processedOrders.size());
 			} catch (IOException e) {
 				e.printStackTrace();
 			}
 		}
 	}
+	///////////////////////////////////////////////////////////
+	///////////////////////////////////////////////////////////
 
 	/* Used to find the Product objects which are stored in orders*/
 	private Product findProduct(String productID) {
@@ -280,24 +299,17 @@ public class FileManagerIO implements Runnable {
 		}
 	}
 
-	public ArrayList<Product> pop() throws InterruptedException {
+	public ArrayList<Order> pop() throws InterruptedException {
 		synchronized (lock) {
-			ArrayList<Product> thisOrder = new ArrayList<>();
 			while(customerQueue.isEmpty()) {
 				lock.wait();
 			}
-//TODO check if next order has same cus Id then continue to add it to the same arrayList
-			
-//			Order o = customerQueue.remove();
-//			thisOrder.add(o.getProduct());
-//			while(!customerQueue.isEmpty()) {
-//				while(o.getCustID().equals(customerQueue.peek().getCustID())) {
-//					thisOrder.add(o.getProduct());
-//					o = customerQueue.remove();
-//				}
-//			}
-//
-//			return thisOrder;
+			ArrayList<Order> wholeOrder = new ArrayList<>();
+			String custId = customerQueue.getFirst().getCustID();
+			while (!customerQueue.isEmpty() && custId.equals(customerQueue.getFirst().getCustID())) {
+				wholeOrder.add(customerQueue.removeFirst());
+			}
+			return wholeOrder;
 		}
 	}
 }
