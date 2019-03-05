@@ -17,9 +17,8 @@ public class Main {
 		AddOrdersView gui = new AddOrdersView();
 		FileManagerController fc = new FileManagerController(gui);
 //		System.out.println(f.customerQueue.size());
-//		System.out.println(f.customerQueue.toString());
-//		for (int i=0; i<=f.customerQueue.size()+1; i++) {
-//			System.out.println(f.customerQueue.remove().getCustID());
+//		for (int i=0; i<f.customerQueue.size(); i++) {
+//			System.out.println(f.customerQueue.get(i).toString());
 //		}
 	}
 }

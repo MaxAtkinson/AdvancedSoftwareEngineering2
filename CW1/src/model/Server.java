@@ -16,13 +16,12 @@ public class Server implements Runnable {
 
 	@Override
 	public void run() {
-		System.out.println(threadID);
 		while(1 != 0) {
 			try {
-				ArrayList<Product> thisOrder = f.pop();
+				ArrayList<Order> thisOrder = f.pop();
 				System.out.println(thisOrder + " " + threadID);
-				f.addCurrentOrder(thisOrder);
-				Thread.sleep(1000);
+				//f.addCurrentOrder(thisOrder);
+				Thread.sleep(3000);
 			} catch (InterruptedException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
