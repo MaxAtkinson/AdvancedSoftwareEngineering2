@@ -19,11 +19,9 @@ import java.io.IOException;
  * This class is responsible for reading in CSV files and creating objects used throughout
  * the rest of the program.  
  */
-public class FileManagerIO implements Runnable {
+public class FileManagerIO  {
 	//Making this a singleton class
 	private static FileManagerIO firstInstance = null;
-	private static int numberOfServers = 2;
-	private final Object lock = new Object();
 	private FileManagerIO() {}
 	public static FileManagerIO getInstance() {
 		if(firstInstance == null) {
@@ -34,9 +32,7 @@ public class FileManagerIO implements Runnable {
 
 	private ArrayList<Order> processedOrders = new ArrayList<>();
 	private Set<Product> products = new HashSet<Product>();
-	public LinkedList<Order> customerQueue = new LinkedList<>(); 
-	private int endOfPriorityIndex = 0;
-	private long lastCustID = 0;
+	public CustomerQueue customerQueue = CustomerQueue.getInstance();
 
 	/* Getters are used in Junit tests to ensure the effectiveness of private methods elsewhere in the class. */
 	public int getSizeOfExistingOrders() 
@@ -150,7 +146,7 @@ public class FileManagerIO implements Runnable {
 				inputLine = scanner.nextLine();
 				if (inputLine.isEmpty()) {
 					// one customer order finished
-					addOrderToQueue(priority, oneWholeOrder);
+					customerQueue.addCustomer(priority, oneWholeOrder);
 					oneWholeOrder = new ArrayList<>();
 				} else {
 					String part[] = inputLine.split(",");
@@ -160,7 +156,7 @@ public class FileManagerIO implements Runnable {
 				}
 			}
 			// add final order in file if there is not an empty line at end
-			addOrderToQueue(priority, oneWholeOrder);
+			customerQueue.addCustomer(priority, oneWholeOrder);
 			scanner.close();
 		}
 		catch (FileNotFoundException e) {
@@ -168,57 +164,23 @@ public class FileManagerIO implements Runnable {
 		}
 	}
 	
-	private void addOrderToQueue(int priority, ArrayList<Product> pList) {
-		if (!pList.isEmpty()) {
-			Date date = new Date();
-			long timeStamp = date.getTime();
-			String customerID = "CUS" + lastCustID;
-			lastCustID++;
-			for (Product p : pList) {
-				Order o = new Order(timeStamp, p, customerID, priority);
-				if (priority == 1) {
-					customerQueue.add(endOfPriorityIndex, o); // insert after online orders
-					endOfPriorityIndex++;
-				} else {
-					customerQueue.add(o); // add at end
-				}
-			}
-		}
-	}
 
 	/* Creates a new customer idea for new orders passed from the GUI.*/
 	private void setLastCustomerID() {
 		if (processedOrders.size()!=0) {
 			Order lastOrder = processedOrders.get(processedOrders.size()-1);
 			String lastCustomerID = lastOrder.getCustID();
-			lastCustID = Long.parseLong(lastCustomerID.substring(3));
-			lastCustID++;
+			long lastCustID = Long.parseLong(lastCustomerID.substring(3));
+			customerQueue.setLastCustomerID(lastCustID);
 		}
 	}
 
 	/* Adds new orders to the existing orders array list passed from the GUI*/
-	//////////////////////////////////////////////////////////////
-	/////////////////////////////////////////////////////////////
-	// TODO REFACTOR/REMOVE BECAUSE ORDERS ARE NOT PROCESSED IMMEDIATELY ANYMORE - NEEDS TO ADD TO QUEUE
-	public void addCurrentOrder(ArrayList<Product> pList) {
-		Date date = new Date();
-		long timeStamp = date.getTime();
-		String customerID = "CUS" + lastCustID;
-		lastCustID++;
-		for (Product p : pList) {
-			Order o = new Order(timeStamp, p, customerID, 0);
-			//TODO In GUI check if adding priority customer.
-			try {
-				store(o);
-				processedOrders.add(o);
-			} catch (IOException e) {
-				e.printStackTrace();
-			}
-		}
-	}
-	///////////////////////////////////////////////////////////
-	///////////////////////////////////////////////////////////
 
+	public void addCurrentOrder(int priority, ArrayList<Product> pList) {
+		customerQueue.addCustomer(priority, pList);
+	}
+	
 	/* Used to find the Product objects which are stored in orders*/
 	private Product findProduct(String productID) {
 		Product thisProduct = null;
@@ -287,29 +249,6 @@ public class FileManagerIO implements Runnable {
 			}
 			fw.write("The total income was: " + totalIncome() + "\n");
 			fw.close();
-		}
-	}
-
-	@Override
-	public void run() {
-		for(int x=0; x<numberOfServers; x++) {
-			Server s = new Server(x);
-			Thread server = new Thread(s);
-			server.start();
-		}
-	}
-
-	public ArrayList<Order> pop() throws InterruptedException {
-		synchronized (lock) {
-			while(customerQueue.isEmpty()) {
-				lock.wait();
-			}
-			ArrayList<Order> wholeOrder = new ArrayList<>();
-			String custId = customerQueue.getFirst().getCustID();
-			while (!customerQueue.isEmpty() && custId.equals(customerQueue.getFirst().getCustID())) {
-				wholeOrder.add(customerQueue.removeFirst());
-			}
-			return wholeOrder;
 		}
 	}
 }
