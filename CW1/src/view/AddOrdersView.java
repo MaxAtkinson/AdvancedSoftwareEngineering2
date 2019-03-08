@@ -233,7 +233,7 @@ public class AddOrdersView extends JFrame {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				if (b.getProducts().size()!=0) {
-					f.addCurrentOrder(b.getProducts());
+					f.addCurrentOrder(1,b.getProducts());
 					JOptionPane.showMessageDialog(null, "Order Confirmed");
 
 					setDiscountAndTotal();
@@ -280,6 +280,7 @@ public class AddOrdersView extends JFrame {
 				b.removeProduct(curentListSelection);
 				setDiscountAndTotal();
 				displayBasket();
+				
 			}
 		});
 		

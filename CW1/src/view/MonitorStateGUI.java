@@ -4,13 +4,17 @@ import java.awt.BorderLayout;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.Insets;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.Observable;
 import java.util.Observer;
 
+import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JList;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 
@@ -25,10 +29,12 @@ public class MonitorStateGUI extends JFrame implements Observer {
 	private JList<String> queueList;
 	private ArrayList<Server> servers;
 	private ArrayList<JList<String>> serverDisplays;
+	private JButton startSim;
 	
 	private int numOfServers;
 	
 	public MonitorStateGUI() {
+//		initBtnActions();
 		cq = CustomerQueue.getInstance();
 		cq.addObserver(this);
 		queueList = new JList<String>();
@@ -36,6 +42,7 @@ public class MonitorStateGUI extends JFrame implements Observer {
 		servers = new ArrayList<>();
 		serverDisplays = new ArrayList<>();
 		numOfServers = 2; // default, changed by slider later
+		
 		
 		JList<String> serverDisplay1= new JList<String>();
 		JList<String> serverDisplay2= new JList<String>();
@@ -105,24 +112,42 @@ public class MonitorStateGUI extends JFrame implements Observer {
 		setSize(800, 425);
 		setResizable(false);
 		
-		startServers();
+		
+		startSim = new JButton("Start");
+		c.fill = GridBagConstraints.HORIZONTAL;
+		c.anchor = GridBagConstraints.LAST_LINE_START;
+		c.gridx = 0;
+		c.gridy = 9;
+		pane.add(startSim, c);
+		c.fill = GridBagConstraints.NONE;
+		
+		startSim.addActionListener(new ActionListener() {
+
+			@Override
+			public void actionPerformed(ActionEvent e) {
+					startServers();
+				
+			}
+		});
+		
+		//startServers();
 	}
 
 	private void startServers() {
-		for(int x=0; x<numOfServers ; x++) {
-			try {
-				Server s = new Server(x);
-				s.addObserver(this);
-				servers.add(s);
-				Thread serverThread = new Thread(s);
-				serverThread.start();
-				Thread.sleep(5000);
-			} catch (InterruptedException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
+	for(int x=0; x<numOfServers ; x++) {
+		try {
+			Server s = new Server(x);
+			s.addObserver(this);
+			servers.add(s);
+			Thread serverThread = new Thread(s);
+			serverThread.start();
+			Thread.sleep(5000);
+		} catch (InterruptedException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
 		}
 	}
+}
 
 	@Override
 	public void update(Observable arg0, Object arg1) {
@@ -145,4 +170,18 @@ public class MonitorStateGUI extends JFrame implements Observer {
 		String[] displayOrder = s.displayOrder();
 		serverDisplays.get(serverID).setListData(displayOrder);
 	}
+	
+//	private void initBtnActions() {
+//		
+//		startSim.addActionListener(new ActionListener() {
+//
+//			@Override
+//			public void actionPerformed(ActionEvent e) {
+//
+//				startServers();
+//				
+//			}
+//		});
+//		
+//	}
 }

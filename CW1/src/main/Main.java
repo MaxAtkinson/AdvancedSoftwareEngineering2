@@ -18,10 +18,12 @@ public class Main {
 		f.readFromOrderFile("Orders.csv");
 		f.readFromNewOrderFile("NewOrders.csv");
 		
+		
+		AddOrdersView gui = new AddOrdersView();
+		
 		MonitorStateGUI gui2 = new MonitorStateGUI();
+					
 		
-		
-//		AddOrdersView gui = new AddOrdersView();
 //		FileManagerController fc = new FileManagerController(gui);
 //		System.out.println(f.customerQueue.size());
 //		for (int i=0; i<f.customerQueue.size(); i++) {

@@ -22,7 +22,7 @@ public class Server extends Observable implements Runnable {
 		list[0] = "Customer ID: " + currentOrder.get(0).getCustID();
 		list[1] = "";
 		for (int i = 0; i < currentOrder.size(); i++) {
-			list[i+1] = currentOrder.get(i).getProduct().getId();
+			list[i+1] = currentOrder.get(i).getProduct().getId() + " " +currentOrder.get(i).getPriority();
 		}
 		return list;
 	}
