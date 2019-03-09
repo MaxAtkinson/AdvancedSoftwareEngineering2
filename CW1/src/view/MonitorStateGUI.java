@@ -1,23 +1,32 @@
 package view;
 
 import java.awt.BorderLayout;
+import java.awt.Event;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.Insets;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.ArrayList;
+import java.util.Hashtable;
 import java.util.LinkedList;
 import java.util.Observable;
 import java.util.Observer;
 
 import javax.swing.JButton;
 import javax.swing.JFrame;
+import javax.swing.JLabel;
 import javax.swing.JList;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
+import javax.swing.JSlider;
+import javax.swing.event.ChangeEvent;
+import javax.swing.event.ChangeListener;
+import javax.swing.event.ListSelectionEvent;
+import javax.swing.event.ListSelectionListener;
 
+import controller.MonitorStateController.SpeedListener;
 import model.CustomerQueue;
 import model.Server;
 import order.Order;
@@ -30,6 +39,15 @@ public class MonitorStateGUI extends JFrame implements Observer {
 	private ArrayList<Server> servers;
 	private ArrayList<JList<String>> serverDisplays;
 	private JButton startSim;
+	//Sim speed
+	public JSlider speedSlider;
+	public JLabel sliderLable;
+	
+	
+	static final int SPEED_MIN = 1;
+	static final int SPEED_MAX = 10;
+	static final int SPEED_INT = 1;
+	
 	
 	private int numOfServers;
 	
@@ -130,6 +148,37 @@ public class MonitorStateGUI extends JFrame implements Observer {
 			}
 		});
 		
+		
+		speedSlider = new JSlider(JSlider.HORIZONTAL, SPEED_MIN, SPEED_MAX, SPEED_INT);
+		speedSlider.setMajorTickSpacing(1);
+		speedSlider.setPaintTicks(true);
+		
+		Hashtable<Integer, JLabel> labelTable = new Hashtable<Integer, JLabel>();
+		labelTable.put( new Integer( SPEED_MIN), new JLabel("Fast") );
+		labelTable.put( new Integer( SPEED_MAX ), new JLabel("Slow") );
+		speedSlider.setLabelTable( labelTable );
+		speedSlider.setPaintLabels(true);
+		
+		
+
+
+		c.fill = GridBagConstraints.HORIZONTAL;
+		c.anchor = GridBagConstraints.LAST_LINE_START;
+		c.gridx = 1;
+		c.gridy = 2;
+		pane.add(speedSlider, c);
+		c.fill = GridBagConstraints.NONE;
+		
+		
+	
+		sliderLable = new JLabel("Thread Processing Speed: " + Integer.toString(Server.getThreadSleepTime()/1000)+ " Seconds");
+		c.fill = GridBagConstraints.HORIZONTAL;
+		c.anchor = GridBagConstraints.LAST_LINE_START;
+		c.gridx = 3;
+		c.gridy = 3;
+		pane.add(sliderLable, c);
+		c.fill = GridBagConstraints.NONE;
+		
 		//startServers();
 	}
 
@@ -141,13 +190,18 @@ public class MonitorStateGUI extends JFrame implements Observer {
 			servers.add(s);
 			Thread serverThread = new Thread(s);
 			serverThread.start();
-			Thread.sleep(5000);
+			Thread.sleep(1);
 		} catch (InterruptedException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 	}
 }
+	
+	//@ Andy - adding change listener to slider - Functionality handled in controller
+	public void addSpeedListener(ChangeListener e){
+		speedSlider.addChangeListener(e);	
+	}
 
 	@Override
 	public void update(Observable arg0, Object arg1) {
@@ -171,17 +225,5 @@ public class MonitorStateGUI extends JFrame implements Observer {
 		serverDisplays.get(serverID).setListData(displayOrder);
 	}
 	
-//	private void initBtnActions() {
-//		
-//		startSim.addActionListener(new ActionListener() {
-//
-//			@Override
-//			public void actionPerformed(ActionEvent e) {
-//
-//				startServers();
-//				
-//			}
-//		});
-//		
-//	}
+
 }

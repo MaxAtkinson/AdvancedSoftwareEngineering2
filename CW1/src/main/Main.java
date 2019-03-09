@@ -2,6 +2,7 @@ package main;
 
 
 import controller.FileManagerController;
+import controller.MonitorStateController;
 import customExceptions.InvalidProductIdentifierException;
 import customExceptions.InvalidProductPriceException;
 import model.CustomerQueue;
@@ -19,9 +20,16 @@ public class Main {
 		f.readFromNewOrderFile("NewOrders.csv");
 		
 		
+		
+		//MCV Set-up
+		MonitorStateGUI view = new MonitorStateGUI();
+		Server model = new Server(1);
+		MonitorStateController controler = new MonitorStateController(view, model);
+		
+		
 		AddOrdersView gui = new AddOrdersView();
 		
-		MonitorStateGUI gui2 = new MonitorStateGUI();
+		//MonitorStateGUI gui2 = new MonitorStateGUI();
 					
 		
 //		FileManagerController fc = new FileManagerController(gui);

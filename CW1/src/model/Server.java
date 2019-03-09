@@ -6,8 +6,16 @@ import java.util.Observable;
 import order.Order;
 
 public class Server extends Observable implements Runnable {
+	
+	
+	private static int threadSleepTime = 1000;
+	
+	
+	
+	
 	CustomerQueue cq = CustomerQueue.getInstance();
 	int threadID;
+
 	
 	ArrayList<Order> currentOrder;
 	
@@ -35,7 +43,7 @@ public class Server extends Observable implements Runnable {
 				System.out.println(currentOrder + " " + threadID);
 				notifyUpdate();
 				// TODO process order
-				Thread.sleep(10000);
+				Thread.sleep(threadSleepTime);
 			} catch (InterruptedException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
@@ -49,4 +57,19 @@ public class Server extends Observable implements Runnable {
 		notifyObservers(this);
 		clearChanged();
 	}
+
+
+
+
+	public static void setThreadSleepTime(int threadSleepTime) {
+		Server.threadSleepTime = threadSleepTime * 1000;
+	}
+	
+	public static int getThreadSleepTime(){
+		return threadSleepTime;
+		
+	}
+	
+
 }
+
