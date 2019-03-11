@@ -59,6 +59,7 @@ public class CustomerQueue extends Observable {
 		} else {
 			queue.add(wholeOrder);
 		}
+		FileManagerIO.getInstance().logEvent(String.format("Timestamp %d: %s was added to the queue (priority %d).", timeStamp, customerID, priority));
 		notifyUpdate();
 	}
 	

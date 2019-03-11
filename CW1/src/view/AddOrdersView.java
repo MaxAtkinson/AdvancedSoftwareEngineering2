@@ -291,6 +291,7 @@ public class AddOrdersView extends JFrame {
 			public void actionPerformed(ActionEvent e) throws NullPointerException {
 				try {
 					f.writeReport("Report.txt");
+					f.dumpLogs();
 					System.exit(0);
 				} catch (IOException e1) {
 					// TODO Auto-generated catch block

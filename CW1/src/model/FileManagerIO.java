@@ -21,18 +21,24 @@ import java.io.IOException;
  */
 public class FileManagerIO  {
 	//Making this a singleton class
-	private static FileManagerIO firstInstance = null;
+	private static volatile FileManagerIO instance = null;
+	private static Object mutex = new Object();
+	
 	private FileManagerIO() {}
+	
 	public static FileManagerIO getInstance() {
-		if(firstInstance == null) {
-			firstInstance = new FileManagerIO();
+		if(instance == null) {
+			synchronized (mutex) {
+				instance = new FileManagerIO();
+			}
 		}
-		return firstInstance;
+		return instance;
 	}
 
 	private ArrayList<Order> processedOrders = new ArrayList<>();
 	private Set<Product> products = new HashSet<Product>();
 	public CustomerQueue customerQueue = CustomerQueue.getInstance();
+	private StringBuilder logs = new StringBuilder();
 
 	/* Getters are used in Junit tests to ensure the effectiveness of private methods elsewhere in the class. */
 	public int getSizeOfExistingOrders() 
@@ -47,6 +53,16 @@ public class FileManagerIO  {
 
 	public Set<Product> getProducts() {
 		return products;
+	}
+
+	public void logEvent(String eventDescription) {
+		logs.append(eventDescription + "\n");
+	}
+	
+	public void dumpLogs() throws IOException {
+		FileWriter fw = new FileWriter ("Logs.txt"); 
+		fw.write(logs.toString());
+		fw.close();
 	}
 
 	/* Used to read in a CSV with product information. Passes this read information to the processMenuLine() method.*/
@@ -241,14 +257,13 @@ public class FileManagerIO  {
 
 	/* Writes the final report to file. Called by the GUI on clicking the 'QUIT' button.*/
 	public void writeReport(String filename) throws IOException {
-		FileWriter fw = new FileWriter (filename); {
-			fw.write("These are all the products on offer:\n");
-			for (Product p: products) {
-				fw.write(p.getName() + "£" + p.getPrice() + " " + p.getDesc() + 
-						". This item was ordered a total of " + timesProductWasOrdered(p) + " times.\n");
-			}
-			fw.write("The total income was: " + totalIncome() + "\n");
-			fw.close();
+		FileWriter fw = new FileWriter (filename); 
+		fw.write("These are all the products on offer:\n");
+		for (Product p: products) {
+			fw.write(p.getName() + "£" + p.getPrice() + " " + p.getDesc() + 
+					". This item was ordered a total of " + timesProductWasOrdered(p) + " times.\n");
 		}
+		fw.write("The total income was: " + totalIncome() + "\n");
+		fw.close();
 	}
 }
