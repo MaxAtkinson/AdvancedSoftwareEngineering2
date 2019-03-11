@@ -11,7 +11,7 @@ import order.Product;
 
 public class CustomerQueue extends Observable {
 	private static CustomerQueue firstInstance = null;
-	private static LinkedList<ArrayList<Order>> queue;
+	private static ArrayList<ArrayList<Order>> queue;
 	private final Object lock = new Object();
 	private static long lastCustID = 0;
 	private static int endOfPriorityIndex = 0;
@@ -20,12 +20,12 @@ public class CustomerQueue extends Observable {
 	public static CustomerQueue getInstance() {
 		if(firstInstance == null) {
 			firstInstance = new CustomerQueue();
-			queue = new LinkedList<>();
+			queue = new ArrayList<>();
 		}
 		return firstInstance;
 	}
 
-	public LinkedList<ArrayList<Order>> getQueue() {
+	public ArrayList<ArrayList<Order>> getQueue() {
 		return queue;
 	}
 	
@@ -50,7 +50,7 @@ public class CustomerQueue extends Observable {
 		String customerID = "CUS" + lastCustID;
 		lastCustID++;
 		for (Product p : orderList) {
-			Order o = new Order(timeStamp, p, customerID, 1);
+			Order o = new Order(timeStamp, p, customerID, priority);
 			wholeOrder.add(o); // insert after online orders
 		}
 		if (priority == 1) {
@@ -76,7 +76,10 @@ public class CustomerQueue extends Observable {
 			while(queue.isEmpty()) {
 				lock.wait();
 			}
-			ArrayList<Order> o = queue.removeFirst();
+			if (queue.get(0).get(0).getPriority() == 1) {
+				endOfPriorityIndex--;
+			}
+			ArrayList<Order> o = queue.remove(0);
 			notifyUpdate();
 			return o;
 		}
