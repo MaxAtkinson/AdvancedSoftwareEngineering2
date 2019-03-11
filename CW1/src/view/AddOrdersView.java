@@ -33,6 +33,7 @@ public class AddOrdersView extends JFrame {
 	private static String currentSetSelection;
 	private static Product curentListSelection;
 	private static Basket b;
+	private static int priority = 0;
 
 	// GUI Instance Variables
 	private JButton buttonAdd, buttonRemove, buttonConfirm, buttonQuit, buttonCancel;
@@ -40,6 +41,7 @@ public class AddOrdersView extends JFrame {
 	private JTree menuTree;
 	private JScrollPane menuPane, orderPane;
 	private static JLabel discount, total;
+	private JCheckBox prioritySelection;
 
 	/** Initialising GUI Defaults */
 	public AddOrdersView() {
@@ -207,11 +209,27 @@ public class AddOrdersView extends JFrame {
 		c.insets = new Insets(35, 0, 0, 0);
 		c.anchor = GridBagConstraints.LAST_LINE_END;
 		panelForm.add(buttonQuit, c);
+		
+		/**Checkbox*/
+		prioritySelection = new JCheckBox("Is this an internet order? ");
+		c.gridx = 3;
+		c.gridy = 9;
+		c.anchor = GridBagConstraints.LAST_LINE_START;
+		c.insets = new Insets(0, 15, 10, 0);
+		panelForm.add(prioritySelection, c);
 
 	}
 	
 	//initialising button actions
 	private void initBtnActions() {
+		// following is executed when the checkbox is selected
+		prioritySelection.addActionListener(new ActionListener()
+				{
+					@Override
+					public void actionPerformed(ActionEvent e) {
+						priority = 1;		
+					}
+				}); 
 		
 		// following methods executed when the CANCEL button is pressed
 		buttonCancel.addActionListener(new ActionListener() {
@@ -233,11 +251,12 @@ public class AddOrdersView extends JFrame {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				if (b.getProducts().size()!=0) {
-					f.addCurrentOrder(1,b.getProducts());
+					f.addCurrentOrder(priority,b.getProducts());
 					JOptionPane.showMessageDialog(null, "Order Confirmed");
 
 					setDiscountAndTotal();
 					b.clearBasket();
+					prioritySelection.setSelected(false);
 					displayBasket();
 				}
 			}
