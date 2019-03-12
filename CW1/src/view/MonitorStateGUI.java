@@ -33,56 +33,51 @@ import order.Order;
 
 
 public class MonitorStateGUI extends JFrame implements Observer {
-	
 	private CustomerQueue cq;
 	private JList<String> queueList;
-	private ArrayList<Server> servers;
 	private ArrayList<JList<String>> serverDisplays;
-	private JButton startSim;
+	public JButton addServerBtn;
+	public JButton removeServerBtn;
 	//Sim speed
 	public JSlider speedSlider;
 	public JLabel sliderLable;
-	
-	
-	static final int SPEED_MIN = 1;
-	static final int SPEED_MAX = 10;
-	static final int SPEED_INT = 1;
-	
-	
-	private int numOfServers;
-	
+
+
+	private static final int SPEED_MIN = 1;
+	private static final int SPEED_MAX = 10;
+	private static final int SPEED_INT = 1;
+	private static final String[] INITIAL_DISPLAY = new String[] {"Till Not In Use"};
+
 	public MonitorStateGUI() {
-//		initBtnActions();
+		// initBtnActions();
 		cq = CustomerQueue.getInstance();
 		cq.addObserver(this);
 		queueList = new JList<String>();
 		updateQueueDisplay(cq);
-		servers = new ArrayList<>();
 		serverDisplays = new ArrayList<>();
-		numOfServers = 2; // default, changed by slider later
 		
-		
+
 		JList<String> serverDisplay1= new JList<String>();
 		JList<String> serverDisplay2= new JList<String>();
 		JList<String> serverDisplay3= new JList<String>();
 		JList<String> serverDisplay4= new JList<String>();
 		
-		serverDisplay1.setListData(new String[] {"Gordon", "Connor", "Max"});
-		serverDisplay2.setListData(new String[] {"Gordon", "Connor", "Max"});
-		serverDisplay3.setListData(new String[] {"Gordon", "Connor", "Max"});
-		serverDisplay4.setListData(new String[] {"Gordon", "Connor", "Max"});
-		
-		
+		serverDisplay1.setListData(INITIAL_DISPLAY);
+		serverDisplay2.setListData(INITIAL_DISPLAY);
+		serverDisplay3.setListData(INITIAL_DISPLAY);
+		serverDisplay4.setListData(INITIAL_DISPLAY);
+
+
 		serverDisplays.add(serverDisplay1);
 		serverDisplays.add(serverDisplay2);
 		serverDisplays.add(serverDisplay3);
 		serverDisplays.add(serverDisplay4);
-		
+
 		GridBagConstraints c = new GridBagConstraints();
-		
+
 		JPanel pane = new JPanel(new GridBagLayout());
 		add(pane);
-		
+
 		JScrollPane queue = new JScrollPane(queueList);
 		c.fill = GridBagConstraints.BOTH;
 		c.anchor = GridBagConstraints.NORTHWEST;
@@ -91,7 +86,7 @@ public class MonitorStateGUI extends JFrame implements Observer {
 		c.gridwidth = 4;
 		c.weightx = 0.0;
 		pane.add(queue, c);
-		
+
 		JScrollPane server1 = new JScrollPane(serverDisplay1);
 		c.fill = GridBagConstraints.HORIZONTAL;
 		c.gridx = 0;
@@ -130,36 +125,33 @@ public class MonitorStateGUI extends JFrame implements Observer {
 		setSize(800, 425);
 		setResizable(false);
 		
-		
-		startSim = new JButton("Start");
+		addServerBtn = new JButton("Add Server");
 		c.fill = GridBagConstraints.HORIZONTAL;
 		c.anchor = GridBagConstraints.LAST_LINE_START;
-		c.gridx = 0;
+		c.gridx = 1;
 		c.gridy = 9;
-		pane.add(startSim, c);
+		pane.add(addServerBtn, c);
 		c.fill = GridBagConstraints.NONE;
 		
-		startSim.addActionListener(new ActionListener() {
+		removeServerBtn = new JButton("Remove Server");
+		c.fill = GridBagConstraints.HORIZONTAL;
+		c.anchor = GridBagConstraints.LAST_LINE_START;
+		c.gridx = 2;
+		c.gridy = 9;
+		pane.add(removeServerBtn, c);
+		c.fill = GridBagConstraints.NONE;
 
-			@Override
-			public void actionPerformed(ActionEvent e) {
-					startServers();
-				
-			}
-		});
-		
-		
 		speedSlider = new JSlider(JSlider.HORIZONTAL, SPEED_MIN, SPEED_MAX, SPEED_INT);
 		speedSlider.setMajorTickSpacing(1);
 		speedSlider.setPaintTicks(true);
-		
+
 		Hashtable<Integer, JLabel> labelTable = new Hashtable<Integer, JLabel>();
 		labelTable.put( new Integer( SPEED_MIN), new JLabel("Fast") );
 		labelTable.put( new Integer( SPEED_MAX ), new JLabel("Slow") );
 		speedSlider.setLabelTable( labelTable );
 		speedSlider.setPaintLabels(true);
-		
-		
+
+
 
 
 		c.fill = GridBagConstraints.HORIZONTAL;
@@ -168,9 +160,9 @@ public class MonitorStateGUI extends JFrame implements Observer {
 		c.gridy = 2;
 		pane.add(speedSlider, c);
 		c.fill = GridBagConstraints.NONE;
-		
-		
-	
+
+
+
 		sliderLable = new JLabel("Thread Processing Speed: " + Integer.toString(Server.getThreadSleepTime()/1000)+ " Seconds");
 		c.fill = GridBagConstraints.HORIZONTAL;
 		c.anchor = GridBagConstraints.LAST_LINE_START;
@@ -178,39 +170,29 @@ public class MonitorStateGUI extends JFrame implements Observer {
 		c.gridy = 3;
 		pane.add(sliderLable, c);
 		c.fill = GridBagConstraints.NONE;
-		
-		//startServers();
+	}
+	
+	public void addServer(ActionListener e) {
+		addServerBtn.addActionListener(e);
+	}
+	
+	public void removeServer(ActionListener e) {
+		removeServerBtn.addActionListener(e);
 	}
 
-	private void startServers() {
-	for(int x=0; x<numOfServers ; x++) {
-		try {
-			Server s = new Server(x);
-			s.addObserver(this);
-			servers.add(s);
-			Thread serverThread = new Thread(s);
-			serverThread.start();
-			Thread.sleep(1);
-		} catch (InterruptedException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-	}
-}
-	
 	//@ Andy - adding change listener to slider - Functionality handled in controller
 	public void addSpeedListener(ChangeListener e){
 		speedSlider.addChangeListener(e);	
 	}
 
 	@Override
-	public void update(Observable arg0, Object arg1) {
-		if (arg0 == cq) {
-			CustomerQueue queue = (CustomerQueue) arg0;
-			updateQueueDisplay(queue);
-		} else if (arg0.getClass() == Server.class) {
-			Server s = (Server) arg0;
- 			updateServerDisplay(s);
+	public void update(Observable sender, Object data) {
+		if (sender == cq) {
+			updateQueueDisplay(cq);
+		} else if (sender.getClass() == Server.class) {
+			Server s = (Server) sender;
+			updateServerDisplay(s);
+			if (cq.isEmpty()) clearDisplays();
 		}
 	}
 
@@ -218,12 +200,22 @@ public class MonitorStateGUI extends JFrame implements Observer {
 		String[] custIDs = queue.getCustomerIDs();
 		queueList.setListData(custIDs);
 	}
-	
-	private void updateServerDisplay(Server s) {
-		int serverID = servers.indexOf(s);
-		String[] displayOrder = s.displayOrder();
-		serverDisplays.get(serverID).setListData(displayOrder);
+
+	public void clearDisplays() {
+		try {
+			Thread.sleep(Server.getThreadSleepTime());
+		} catch (InterruptedException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		for (JList<String> server : serverDisplays) {
+			server.setListData(INITIAL_DISPLAY);
+		}
 	}
 	
-
+	private void updateServerDisplay(Server s) {
+		String[] display = s.displayOrder();
+		if (!s.isActive()) display = INITIAL_DISPLAY;
+		serverDisplays.get(s.getId()).setListData(display);
+	}
 }

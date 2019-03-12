@@ -258,6 +258,7 @@ public class AddOrdersView extends JFrame {
 					b.clearBasket();
 					prioritySelection.setSelected(false);
 					displayBasket();
+					priority=0;
 				}
 			}
 		});
@@ -340,9 +341,8 @@ public class AddOrdersView extends JFrame {
 				drink.add(menuItem);
 			} else if (p.getId().contains("MEM")){
 				mem.add(menuItem);
-			} // no else for readability
+			}
 		}
-
 	}
 	
 	//sets total and discount JLable values

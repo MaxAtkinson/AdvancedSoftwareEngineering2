@@ -19,7 +19,7 @@ import java.io.IOException;
  * This class is responsible for reading in CSV files and creating objects used throughout
  * the rest of the program.  
  */
-public class FileManagerIO  {
+public class FileManagerIO {
 	//Making this a singleton class
 	private static volatile FileManagerIO instance = null;
 	private static Object mutex = new Object();

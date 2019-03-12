@@ -17,6 +17,7 @@ public class CustomerQueue extends Observable {
 	private static int endOfPriorityIndex = 0;
 	
 	private CustomerQueue() {}
+
 	public static CustomerQueue getInstance() {
 		if(firstInstance == null) {
 			firstInstance = new CustomerQueue();
@@ -84,12 +85,6 @@ public class CustomerQueue extends Observable {
 			return o;
 		}
 	}
-	
-//	public synchronized ArrayList<Order> getNextCustomer() {
-//		ArrayList<Order> o = queue.removeFirst();
-//		notifyUpdate();
-//		return o;
-//	}
 	
 	public void notifyUpdate() {
 		setChanged();
