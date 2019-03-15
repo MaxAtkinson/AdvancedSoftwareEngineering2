@@ -215,9 +215,18 @@ public class FileManagerIO {
 		String customerID = o.getCustID();
 		Product product = o.getProduct();
 		String productID = product.getId();
-		fw.write(timestamp + "," + customerID + "," + productID + "," + 0 +"\n");
+		fw.write(timestamp + "," + customerID + "," + productID + "," + o.getPriority() +"\n");
+		processedOrders.add(o);
 		fw.close();
 	}
+	
+	public synchronized void store(ArrayList<Order> orders) throws IOException {
+		for (Order o : orders) {
+			store(o);
+			logEvent(String.format("Processing order of %s for %s", o.getProduct().getId(), o.getCustID()));		
+		}
+	}
+
 
 	/* Used by writeReport() to find the number of times a product was ordered*/
 	private int timesProductWasOrdered(Product p) {

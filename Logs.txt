@@ -1,5 +1,12 @@
-Timestamp 1552389858578: CUS9 was added to the queue (priority 0).
-Timestamp 1552389858578: CUS10 was added to the queue (priority 1).
-Timestamp 1552389858578: CUS11 was added to the queue (priority 0).
-Timestamp 1552389858578: CUS12 was added to the queue (priority 1).
-Timestamp 1552389858578: CUS13 was added to the queue (priority 1).
+Timestamp 1552666512547: CUS10 was added to the queue (priority 0).
+Timestamp 1552666512550: CUS11 was added to the queue (priority 1).
+Timestamp 1552666512551: CUS12 was added to the queue (priority 0).
+Timestamp 1552666512551: CUS13 was added to the queue (priority 1).
+Timestamp 1552666512552: CUS14 was added to the queue (priority 1).
+Processing order of FOOD131 for CUS11
+Processing order of MEM118 for CUS13
+Processing order of BEV119 for CUS14
+Processing order of BEV113 for CUS10
+Processing order of BEV119 for CUS10
+Processing order of BEV117 for CUS10
+Processing order of MEM119 for CUS12

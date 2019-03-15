@@ -48,8 +48,8 @@ public class CustomerQueue extends Observable {
 		Date date = new Date();
 		long timeStamp = date.getTime();
 		ArrayList<Order> wholeOrder = new ArrayList<>();
-		String customerID = "CUS" + lastCustID;
 		lastCustID++;
+		String customerID = "CUS" + lastCustID;
 		for (Product p : orderList) {
 			Order o = new Order(timeStamp, p, customerID, priority);
 			wholeOrder.add(o); // insert after online orders

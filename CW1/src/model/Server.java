@@ -1,5 +1,6 @@
 package model;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Observable;
 
@@ -8,6 +9,7 @@ import order.Order;
 public class Server extends Observable implements Runnable {
 	private static int THREAD_SLEEP_TIME = 1000;
 	private CustomerQueue cq = CustomerQueue.getInstance();
+	private FileManagerIO f = FileManagerIO.getInstance();
 	private int threadID;
 	private ArrayList<Order> currentOrder;
 	private boolean active;
@@ -42,10 +44,11 @@ public class Server extends Observable implements Runnable {
 			try {
 				currentOrder = cq.getNextCustomer();
 				notifyUpdate();
-				// TODO process order
+				f.store(currentOrder);
 				Thread.sleep(THREAD_SLEEP_TIME);
 			} catch (InterruptedException e) {
-				// TODO Auto-generated catch block
+				e.printStackTrace();
+			} catch (IOException e) {
 				e.printStackTrace();
 			}
 		}
