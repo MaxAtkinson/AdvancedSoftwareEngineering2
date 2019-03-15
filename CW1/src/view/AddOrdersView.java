@@ -28,7 +28,6 @@ import model.*;
 
 public class AddOrdersView extends JFrame {
 
-	//Instance Variables
 	private static FileManagerIO f;
 	private static String currentSetSelection;
 	private static Product curentListSelection;

@@ -163,6 +163,7 @@ public class FileManagerIO {
 				if (inputLine.isEmpty()) {
 					// one customer order finished
 					customerQueue.addCustomer(priority, oneWholeOrder);
+					Thread.sleep(500);
 					oneWholeOrder = new ArrayList<>();
 				} else {
 					String part[] = inputLine.split(",");
@@ -177,6 +178,8 @@ public class FileManagerIO {
 		}
 		catch (FileNotFoundException e) {
 			System.out.print("File: " + fileName + " cannot be found.");
+		} catch (InterruptedException e) {
+			e.printStackTrace();
 		}
 	}
 	
