@@ -22,13 +22,12 @@ import java.io.IOException;
 public class FileManagerIO {
 	//Making this a singleton class
 	private static volatile FileManagerIO instance = null;
-	private static Object mutex = new Object();
 	
 	private FileManagerIO() {}
 	
 	public static FileManagerIO getInstance() {
 		if(instance == null) {
-			synchronized (mutex) {
+			synchronized (FileManagerIO.class) {
 				instance = new FileManagerIO();
 			}
 		}
@@ -36,23 +35,13 @@ public class FileManagerIO {
 	}
 
 	private ArrayList<Order> processedOrders = new ArrayList<>();
-	private Set<Product> products = new HashSet<Product>();
-	public CustomerQueue customerQueue = CustomerQueue.getInstance();
+	private CustomerQueue customerQueue = CustomerQueue.getInstance();
+	private ProductsList productsList = ProductsList.getInstance();
 	private StringBuilder logs = new StringBuilder();
 
 	/* Getters are used in Junit tests to ensure the effectiveness of private methods elsewhere in the class. */
-	public int getSizeOfExistingOrders() 
-	{
+	public int getSizeOfExistingOrders() {
 		return processedOrders.size();
-	}
-
-	public int getNumberOfProducts() 
-	{
-		return products.size();
-	}
-
-	public Set<Product> getProducts() {
-		return products;
 	}
 
 	public void logEvent(String eventDescription) {
@@ -66,14 +55,13 @@ public class FileManagerIO {
 	}
 
 	/* Used to read in a CSV with product information. Passes this read information to the processMenuLine() method.*/
-	public void readFromProductsFile(String fileName) throws InvalidProductPriceException, InvalidProductIdentifierException
-	{
+	public void readFromProductsFile(String fileName) throws InvalidProductPriceException, InvalidProductIdentifierException {
 		File file = new File(fileName);
 		try {
 			Scanner scanner = new Scanner(file);	
 			String inputLine = scanner.nextLine(); // skip headers line
 			// reset products list to prevent repeating info on each file read
-			products = new HashSet<Product>();
+			productsList.clearProductsList();
 			while (scanner.hasNextLine()) {
 				inputLine = scanner.nextLine();
 				processMenuLine(inputLine);
@@ -96,13 +84,13 @@ public class FileManagerIO {
 			String cat = part[3];
 			if (cat.contentEquals("Food")) {
 				Food p = new Food(name, desc, price, id);
-				products.add(p);
+				productsList.addToProductsList(p);
 			} else if (cat.contentEquals("Beverage")) {
 				Drink p = new Drink(name, desc, price, id);
-				products.add(p);
+				productsList.addToProductsList(p);
 			} else if (cat.contentEquals("Memorabilia")) {
 				Memoribilia p = new Memoribilia(name, desc, price, id);
-				products.add(p);
+				productsList.addToProductsList(p);
 				// no else for readability
 			}
 		} catch(NumberFormatException a) {
@@ -111,8 +99,7 @@ public class FileManagerIO {
 		}
 	}
 	/* Used to read in a CSV with previous orders information. Passes this read information to the processOrderLine() method.*/	
-	public void readFromOrderFile(String fileName) 
-	{
+	public void readFromOrderFile(String fileName) {
 		File file = new File(fileName);
 		try {
 			Scanner scanner = new Scanner(file);
@@ -136,7 +123,7 @@ public class FileManagerIO {
 		try {
 			String part[] = inputLine.split(",");
 			long timeStamp = Long.parseLong(part[0]);
-			Product product = findProduct(part[2]);
+			Product product = productsList.findProduct(part[2]);
 			String custID = part[1];
 			int priority = Integer.parseInt(part[3]);
 			Order o = new Order(timeStamp, product, custID, priority);
@@ -150,8 +137,7 @@ public class FileManagerIO {
 	}
 
 	/* Used to read in a CSV with previous orders information. Passes this read information to the processOrderLine() method.*/	
-	public void readFromNewOrderFile(String fileName) 
-	{
+	public void readFromNewOrderFile(String fileName) {
 		File file = new File(fileName);
 		try {
 			Scanner scanner = new Scanner(file);
@@ -167,7 +153,7 @@ public class FileManagerIO {
 					oneWholeOrder = new ArrayList<>();
 				} else {
 					String part[] = inputLine.split(",");
-					Product product = findProduct(part[0]);
+					Product product = productsList.findProduct(part[0]);
 					priority = Integer.parseInt(part[1]);
 					oneWholeOrder.add(product);
 				}
@@ -199,17 +185,7 @@ public class FileManagerIO {
 	public void addCurrentOrder(int priority, ArrayList<Product> pList) {
 		customerQueue.addCustomer(priority, pList);
 	}
-	
-	/* Used to find the Product objects which are stored in orders*/
-	private Product findProduct(String productID) {
-		Product thisProduct = null;
-		for (Product a : products) {
-			if (a.getId().equals(productID)) {
-				return a;
-			}
-		}
-		return thisProduct;
-	}
+
 
 	/* Writes new orders to the Orders.csv*/
 	public void store(Order o) throws IOException {
@@ -271,7 +247,7 @@ public class FileManagerIO {
 	public void writeReport(String filename) throws IOException {
 		FileWriter fw = new FileWriter (filename); 
 		fw.write("These are all the products on offer:\n");
-		for (Product p: products) {
+		for (Product p: productsList.getProducts()) {
 			fw.write(p.getName() + "£" + p.getPrice() + " " + p.getDesc() + 
 					". This item was ordered a total of " + timesProductWasOrdered(p) + " times.\n");
 		}

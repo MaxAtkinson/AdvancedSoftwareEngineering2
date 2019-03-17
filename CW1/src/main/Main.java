@@ -23,7 +23,6 @@ public class Main {
 		f.readFromProductsFile("Products.csv");
 		f.readFromOrderFile("Orders.csv");
 		f.readFromNewOrderFile("NewOrders.csv");
-		
 		new AddOrdersView();
 	}
 }

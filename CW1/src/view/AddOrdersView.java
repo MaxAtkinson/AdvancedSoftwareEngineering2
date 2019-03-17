@@ -29,10 +29,12 @@ import model.*;
 public class AddOrdersView extends JFrame {
 
 	private static FileManagerIO f;
+	private static ProductsList productsList;
+	private static CustomerQueue cq;
 	private static String currentSetSelection;
 	private static Product curentListSelection;
 	private static Basket b;
-	private static int priority = 0;
+	private static int priority;
 
 	// GUI Instance Variables
 	private JButton buttonAdd, buttonRemove, buttonConfirm, buttonQuit, buttonCancel;
@@ -45,6 +47,8 @@ public class AddOrdersView extends JFrame {
 	/** Initialising GUI Defaults */
 	public AddOrdersView() {
 		f = FileManagerIO.getInstance();
+		productsList = ProductsList.getInstance();
+		cq = CustomerQueue.getInstance();
 		b = new Basket();
 		createView();
 		initBtnActions();
@@ -250,7 +254,7 @@ public class AddOrdersView extends JFrame {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				if (b.getProducts().size()!=0) {
-					f.addCurrentOrder(priority,b.getProducts());
+					cq.addCustomer(priority,b.getProducts());
 					JOptionPane.showMessageDialog(null, "Order Confirmed");
 
 					setDiscountAndTotal();
@@ -275,7 +279,7 @@ public class AddOrdersView extends JFrame {
 					return;
 				}
 
-				for (Product p : f.getProducts()) {
+				for (Product p : productsList.getProducts()) {
 					if (p.getName().equals(currentSetSelection)) {
 						b.addProduct(p);
 					}
@@ -323,7 +327,7 @@ public class AddOrdersView extends JFrame {
 	
 	/**Method for creating JTree Nodes*/
 	private void createNodes(DefaultMutableTreeNode root) {
-		Set<Product> products = f.getProducts();
+		Set<Product> products = productsList.getProducts();
 		
 		DefaultMutableTreeNode food = new DefaultMutableTreeNode("Food");
 		DefaultMutableTreeNode drink = new DefaultMutableTreeNode("Drink");
