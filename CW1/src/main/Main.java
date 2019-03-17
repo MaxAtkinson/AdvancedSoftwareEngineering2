@@ -16,7 +16,9 @@ public class Main {
 
 	public static void main(String[] args) throws InvalidProductPriceException, InvalidProductIdentifierException {
 		//MVC Set-up
-		new MonitorStateController(new MonitorStateGUI());
+		ServerList serversModel = new ServerList();
+		MonitorStateGUI monitorView = new MonitorStateGUI();
+		new MonitorStateController(monitorView, serversModel);
 		
 		// Init
 		FileManagerIO f = FileManagerIO.getInstance();
