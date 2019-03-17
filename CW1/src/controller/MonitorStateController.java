@@ -17,31 +17,31 @@ public class MonitorStateController {
 	private MonitorStateGUI view;
 	private ServerList serverList;
 	
-	public MonitorStateController(MonitorStateGUI view){
+	public MonitorStateController(MonitorStateGUI view, ServerList serverList){
 		this.view = view;
-		this.serverList = new ServerList();
+		this.serverList = serverList;
 		this.view.addSpeedListener(new SpeedListener());
-		this.view.addServer(new ActionListener() {
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				int numOfServers = serverList.getServers().size();
-				if (numOfServers < 4) {
-					Server s = new Server(numOfServers);
-					serverList.addServer(s);
-					s.addObserver(view);
-					Thread serverThread = new Thread(s);
-					serverThread.start();
-				}
+		this.view.addServer(new AddServerListener());
+		this.view.removeServer(new RemoveServerListener());
+	}
+	
+	public class AddServerListener implements ActionListener {
+		public void actionPerformed(ActionEvent e) {
+			int numOfServers = serverList.getServers().size();
+			if (numOfServers < 4) {
+				Server s = new Server(numOfServers);
+				serverList.addServer(s);
+				s.addObserver(view);
+				Thread serverThread = new Thread(s);
+				serverThread.start();
 			}
-			
-		});
-		this.view.removeServer(new ActionListener() {
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				serverList.removeServer();
-			}
-			
-		});
+		}
+	}
+	
+	public class RemoveServerListener implements ActionListener {
+		public void actionPerformed(ActionEvent e) {
+			serverList.removeServer();
+		}
 	}
 	
 	// inner class SpeedListener responds when user sets the Speed via the slider
