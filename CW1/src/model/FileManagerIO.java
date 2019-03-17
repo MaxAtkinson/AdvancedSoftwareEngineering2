@@ -180,13 +180,6 @@ public class FileManagerIO {
 		}
 	}
 
-	/* Adds new orders to the existing orders array list passed from the GUI*/
-
-	public void addCurrentOrder(int priority, ArrayList<Product> pList) {
-		customerQueue.addCustomer(priority, pList);
-	}
-
-
 	/* Writes new orders to the Orders.csv*/
 	public void store(Order o) throws IOException {
 		FileWriter fw = new FileWriter("Orders.csv", true);
