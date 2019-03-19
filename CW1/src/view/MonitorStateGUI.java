@@ -38,6 +38,7 @@ public class MonitorStateGUI extends JFrame implements Observer {
 	private ArrayList<JList<String>> serverDisplays;
 	public JButton addServerBtn;
 	public JButton removeServerBtn;
+	public JButton startSumulation;
 	//Sim speed
 	public JSlider speedSlider;
 	public JLabel sliderLable;
@@ -92,7 +93,7 @@ public class MonitorStateGUI extends JFrame implements Observer {
 		c.gridx = 0;
 		c.gridy = 0;
 		c.gridwidth = 1;
-		c.weightx = 0.5;
+		c.weightx = 1;
 		pane.add(server1, c);
 
 		JScrollPane server2 = new JScrollPane(serverDisplay2);
@@ -100,7 +101,7 @@ public class MonitorStateGUI extends JFrame implements Observer {
 		c.gridx = 1;
 		c.gridy = 0;
 		c.gridwidth = 1;
-		c.weightx = 0.5;
+		c.weightx = 1;
 		pane.add(server2, c);
 
 		JScrollPane server3 = new JScrollPane(serverDisplay3);
@@ -108,7 +109,7 @@ public class MonitorStateGUI extends JFrame implements Observer {
 		c.gridx = 2;
 		c.gridy = 0;
 		c.gridwidth = 1;
-		c.weightx = 0.5;
+		c.weightx = 1;
 		pane.add(server3, c);
 
 		JScrollPane server4 = new JScrollPane(serverDisplay4);
@@ -116,7 +117,7 @@ public class MonitorStateGUI extends JFrame implements Observer {
 		c.gridx = 3;
 		c.gridy = 0;
 		c.gridwidth = 1;
-		c.weightx = 0.5;
+		c.weightx = 1;
 		pane.add(server4, c);
 		getContentPane().add(pane, BorderLayout.NORTH);
 		setTitle("Monitor Queue");
@@ -139,6 +140,14 @@ public class MonitorStateGUI extends JFrame implements Observer {
 		c.gridx = 2;
 		c.gridy = 9;
 		pane.add(removeServerBtn, c);
+		c.fill = GridBagConstraints.NONE;
+		
+		startSumulation = new JButton("Start Sumulation");
+		c.fill = GridBagConstraints.HORIZONTAL;
+		c.anchor = GridBagConstraints.LAST_LINE_START;
+		c.gridx = 3;
+		c.gridy = 9;
+		pane.add(startSumulation, c);
 		c.fill = GridBagConstraints.NONE;
 
 		speedSlider = new JSlider(JSlider.HORIZONTAL, SPEED_MIN, SPEED_MAX, SPEED_INT);
@@ -175,6 +184,11 @@ public class MonitorStateGUI extends JFrame implements Observer {
 	public void addServer(ActionListener e) {
 		addServerBtn.addActionListener(e);
 	}
+	
+	public void startSim(ActionListener e) {
+		startSumulation.addActionListener(e);
+	}
+	
 	
 	public void removeServer(ActionListener e) {
 		removeServerBtn.addActionListener(e);

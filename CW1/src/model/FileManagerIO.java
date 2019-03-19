@@ -148,8 +148,8 @@ public class FileManagerIO {
 				inputLine = scanner.nextLine();
 				if (inputLine.isEmpty()) {
 					// one customer order finished
-					customerQueue.addCustomer(priority, oneWholeOrder);
-					Thread.sleep(500);
+					customerQueue.addCustomertoBuffer(priority, oneWholeOrder);
+					//Thread.sleep(500);
 					oneWholeOrder = new ArrayList<>();
 				} else {
 					String part[] = inputLine.split(",");
@@ -159,14 +159,12 @@ public class FileManagerIO {
 				}
 			}
 			// add final order in file if there is not an empty line at end
-			customerQueue.addCustomer(priority, oneWholeOrder);
+			customerQueue.addCustomertoBuffer(priority, oneWholeOrder);
 			scanner.close();
 		}
 		catch (FileNotFoundException e) {
 			System.out.print("File: " + fileName + " cannot be found.");
-		} catch (InterruptedException e) {
-			e.printStackTrace();
-		}
+		} 
 	}
 	
 

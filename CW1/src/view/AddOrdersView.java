@@ -245,6 +245,16 @@ public class AddOrdersView extends JFrame {
 				b.clearBasket();
 				setDiscountAndTotal();
 				displayBasket();
+				
+				//THREAD TEST
+//				System.out.println(cq.checkBuffer());
+//				while(!cq.checkBuffer()){
+//					cq.popPush(cq.getBuffer(), cq.getQueue());
+//				}
+				
+//				Qthread q = new Qthread();
+//				Thread qThread = new Thread(q);
+//				qThread.start();
 
 				JOptionPane.showMessageDialog(null, "Order has been sucessfully cancelled");;
 			}

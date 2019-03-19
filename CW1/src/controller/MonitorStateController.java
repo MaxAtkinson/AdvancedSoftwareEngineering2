@@ -8,7 +8,7 @@ import java.awt.event.ActionListener;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 
-
+import model.Qthread;
 import model.Server;
 import model.ServerList;
 
@@ -23,6 +23,18 @@ public class MonitorStateController {
 		this.view.addSpeedListener(new SpeedListener());
 		this.view.addServer(new AddServerListener());
 		this.view.removeServer(new RemoveServerListener());
+		this.view.startSim(new StartSimualationListner());
+	}
+	
+	
+	public class StartSimualationListner implements ActionListener {
+		public void actionPerformed(ActionEvent e) {
+			
+				Qthread q = new Qthread();
+				Thread qThread = new Thread(q);
+				qThread.start();
+		
+		}
 	}
 	
 	public class AddServerListener implements ActionListener {
@@ -37,6 +49,9 @@ public class MonitorStateController {
 			}
 		}
 	}
+	
+	
+	
 	
 	public class RemoveServerListener implements ActionListener {
 		public void actionPerformed(ActionEvent e) {

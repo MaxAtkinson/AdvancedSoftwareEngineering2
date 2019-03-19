@@ -12,9 +12,14 @@ import order.Product;
 public class CustomerQueue extends Observable {
 	private static CustomerQueue firstInstance = null;
 	private static ArrayList<ArrayList<Order>> queue;
-	private final Object lock = new Object();
+		private final Object lock = new Object();
 	private static long lastCustID = 0;
 	private static int endOfPriorityIndex = 0;
+	//-----------
+	private static ArrayList<ArrayList<Order>> buffer;
+	
+	
+	
 	
 	private CustomerQueue() {}
 
@@ -22,12 +27,28 @@ public class CustomerQueue extends Observable {
 		if(firstInstance == null) {
 			firstInstance = new CustomerQueue();
 			queue = new ArrayList<>();
+			//--------------
+			buffer = new ArrayList<>();
 		}
 		return firstInstance;
 	}
 
+	public void popPush(ArrayList<ArrayList<Order>> in , ArrayList<ArrayList<Order>> out){
+		
+		ArrayList<Order> o = in.remove(0);
+		System.out.println(o);
+		out.add(o);
+		notifyUpdate();
+		
+	}
+	
+	
 	public ArrayList<ArrayList<Order>> getQueue() {
 		return queue;
+	}
+	
+	public ArrayList<ArrayList<Order>> getBuffer() {
+		return buffer;
 	}
 	
 	public int getQueueSize() {
@@ -38,7 +59,12 @@ public class CustomerQueue extends Observable {
 		String[] custIDs = new String[getQueueSize()];
 		int index = 0;
 		for (Iterator<ArrayList<Order>> i = queue.iterator(); i.hasNext();) {
-			custIDs[index] = i.next().get(0).getCustID();
+			ArrayList<Order> o = i.next();
+			String items = " items";
+			String pri = "Online";
+			if (o.size() == 1) { items = " item"; }
+			if (o.get(0).getPriority() == 0) { pri = "In-Store"; }
+			custIDs[index] = o.get(0).getCustID() + ", " + o.size() + items + ", " + pri;
 			index++;
 		}
 		return custIDs;
@@ -64,6 +90,29 @@ public class CustomerQueue extends Observable {
 		notifyUpdate();
 	}
 	
+	public void addCustomertoBuffer(int priority, ArrayList<Product> orderList) {
+		Date date = new Date();
+		long timeStamp = date.getTime();
+		ArrayList<Order> wholeOrder = new ArrayList<>();
+		lastCustID++;
+		String customerID = "CUS" + lastCustID;
+		for (Product p : orderList) {
+			Order o = new Order(timeStamp, p, customerID, priority);
+			wholeOrder.add(o); // insert after online orders
+		}
+//		if (priority == 1) {
+//			buffer.add(endOfPriorityIndex, wholeOrder);
+//			endOfPriorityIndex++;
+//		} else {
+			buffer.add(wholeOrder);
+	//	}
+		FileManagerIO.getInstance().logEvent(String.format("Timestamp %d: %s was added to the queue (priority %d).", timeStamp, customerID, priority));
+		notifyUpdate();
+		
+		//popPush(buffer, queue);
+		
+	}
+	
 	public void setLastCustomerID(long lastCustID) {
 		CustomerQueue.lastCustID = lastCustID;
 	}
@@ -84,6 +133,12 @@ public class CustomerQueue extends Observable {
 			notifyUpdate();
 			return o;
 		}
+	}
+	
+	
+	public boolean checkBuffer(){
+		boolean full = buffer.isEmpty();
+		return full;
 	}
 	
 	public void notifyUpdate() {
