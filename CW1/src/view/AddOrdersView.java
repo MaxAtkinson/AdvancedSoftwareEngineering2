@@ -81,6 +81,7 @@ public class AddOrdersView extends JFrame {
 		 * JScrollPanes ect.
 		 */
 		
+//		
 		/**JTREE*/
 		DefaultMutableTreeNode root = new DefaultMutableTreeNode("Products");
 		createNodes(root);
@@ -179,15 +180,16 @@ public class AddOrdersView extends JFrame {
 		/**CONFIRM BUTTON*/
 		//format
 		buttonConfirm = new JButton("      Confirm Order      ");
-		c.anchor = GridBagConstraints.LINE_END;
+		c.anchor = GridBagConstraints.LINE_START;
 		c.gridx = 3;
 		c.gridy = 6;
 		panelForm.add(buttonConfirm, c);
 
-		/**REMOVE BUTTON*/
+		/**ADD BUTTON*/
 		//format
 		buttonAdd = new JButton("Add to Order");
 		c.anchor = GridBagConstraints.LINE_START;
+		c.insets = new Insets(0, 0, 0, 10);
 		c.fill = GridBagConstraints.HORIZONTAL;
 		c.gridx = 0;
 		c.gridy = 6;
@@ -199,7 +201,7 @@ public class AddOrdersView extends JFrame {
 		buttonRemove = new JButton("      Remove Item      ");
 		c.gridx = 3;
 		c.gridy = 6;
-		c.anchor = GridBagConstraints.LINE_START;
+		c.anchor = GridBagConstraints.LINE_END;
 		c.insets = new Insets(0, 15, 0, 0);
 		panelForm.add(buttonRemove, c);
 		c.insets = new Insets(0, 0, 0, 0);
@@ -273,12 +275,18 @@ public class AddOrdersView extends JFrame {
 			public void actionPerformed(ActionEvent e) {
 				
 				//If leaf node not selected, display message and return
-				if (currentSetSelection.contains("Products") || currentSetSelection.contains("Food") || currentSetSelection.contains("Drink")
-						|| currentSetSelection.contains("Memorabilia")) {
+				if(currentSetSelection == null){
 					JOptionPane.showMessageDialog(null, "Please select a product to add to the basket");
-					return;
 				}
-
+				
+				else if (currentSetSelection.contains("Products") || currentSetSelection.contains("Food") || currentSetSelection.contains("Drink")|| currentSetSelection.contains("Memorabilia"))  {
+					JOptionPane.showMessageDialog(null, "Please select a product to add to the basket");
+					
+					return;
+				} 
+				
+				else{
+				System.out.println("this is " + currentSetSelection);
 				for (Product p : productsList.getProducts()) {
 					if (p.getName().equals(currentSetSelection)) {
 						b.addProduct(p);
@@ -286,7 +294,7 @@ public class AddOrdersView extends JFrame {
 				}
 				setDiscountAndTotal();
 				displayBasket();
-			}
+			}}
 		});
 		
 		// following methods executed when the REMOVE button is pressed
@@ -326,6 +334,9 @@ public class AddOrdersView extends JFrame {
 	}
 	
 	/**Method for creating JTree Nodes*/
+	
+
+	
 	private void createNodes(DefaultMutableTreeNode root) {
 		Set<Product> products = productsList.getProducts();
 		
