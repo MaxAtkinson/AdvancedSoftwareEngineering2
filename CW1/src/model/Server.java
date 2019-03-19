@@ -1,28 +1,27 @@
 package model;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Observable;
 
 import order.Order;
 
 public class Server extends Observable implements Runnable {
+	private static int THREAD_SLEEP_TIME = 1000;
+	private CustomerQueue cq = CustomerQueue.getInstance();
+	private FileManagerIO f = FileManagerIO.getInstance();
+	private int threadID;
+	private ArrayList<Order> currentOrder;
+	private boolean active;
 	
-	
-	private static int threadSleepTime = 1000;
-	
-	
-	
-	
-	CustomerQueue cq = CustomerQueue.getInstance();
-	int threadID;
-
-	
-	ArrayList<Order> currentOrder;
-	
-	public Server (int threadID)
-	{
+	public Server (int threadID) {
 		this.threadID = threadID;
 		currentOrder = new ArrayList<>();
+		active = true;
+	}
+	
+	public int getId() {
+		return threadID;
 	}
 	
 	public String[] displayOrder() {
@@ -34,22 +33,26 @@ public class Server extends Observable implements Runnable {
 		}
 		return list;
 	}
+	
+	public void setActive(boolean active) {
+		this.active = active;
+	}
 
 	@Override
 	public void run() {
-		while(1 != 0) {
+		while(active) {
 			try {
 				currentOrder = cq.getNextCustomer();
-				System.out.println(currentOrder + " " + threadID);
 				notifyUpdate();
-				// TODO process order
-				Thread.sleep(threadSleepTime);
+				f.store(currentOrder);
+				Thread.sleep(THREAD_SLEEP_TIME);
 			} catch (InterruptedException e) {
-				// TODO Auto-generated catch block
+				e.printStackTrace();
+			} catch (IOException e) {
 				e.printStackTrace();
 			}
 		}
-
+		notifyUpdate();
 	}
 	
 	public void notifyUpdate() {
@@ -58,18 +61,17 @@ public class Server extends Observable implements Runnable {
 		clearChanged();
 	}
 
-
-
-
 	public static void setThreadSleepTime(int threadSleepTime) {
-		Server.threadSleepTime = threadSleepTime * 1000;
+		Server.THREAD_SLEEP_TIME = threadSleepTime * 1000;
 	}
 	
 	public static int getThreadSleepTime(){
-		return threadSleepTime;
+		return THREAD_SLEEP_TIME;
 		
 	}
-	
 
+	public boolean isActive() {
+		return active;
+	}
 }
 

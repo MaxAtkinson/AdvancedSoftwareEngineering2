@@ -14,5 +14,4 @@ public class Drink extends Product {
 			throw new InvalidProductIdentifierException(String.format("Invalid ID on product with name: %s", name));
 		}
 	}
-
 }

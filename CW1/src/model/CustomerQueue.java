@@ -17,6 +17,7 @@ public class CustomerQueue extends Observable {
 	private static int endOfPriorityIndex = 0;
 	
 	private CustomerQueue() {}
+
 	public static CustomerQueue getInstance() {
 		if(firstInstance == null) {
 			firstInstance = new CustomerQueue();
@@ -47,8 +48,8 @@ public class CustomerQueue extends Observable {
 		Date date = new Date();
 		long timeStamp = date.getTime();
 		ArrayList<Order> wholeOrder = new ArrayList<>();
-		String customerID = "CUS" + lastCustID;
 		lastCustID++;
+		String customerID = "CUS" + lastCustID;
 		for (Product p : orderList) {
 			Order o = new Order(timeStamp, p, customerID, priority);
 			wholeOrder.add(o); // insert after online orders
@@ -84,12 +85,6 @@ public class CustomerQueue extends Observable {
 			return o;
 		}
 	}
-	
-//	public synchronized ArrayList<Order> getNextCustomer() {
-//		ArrayList<Order> o = queue.removeFirst();
-//		notifyUpdate();
-//		return o;
-//	}
 	
 	public void notifyUpdate() {
 		setChanged();
