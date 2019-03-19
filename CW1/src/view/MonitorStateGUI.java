@@ -92,7 +92,7 @@ public class MonitorStateGUI extends JFrame implements Observer {
 		c.gridx = 0;
 		c.gridy = 0;
 		c.gridwidth = 1;
-		c.weightx = 0.5;
+		c.weightx = 1;
 		pane.add(server1, c);
 
 		JScrollPane server2 = new JScrollPane(serverDisplay2);
@@ -100,7 +100,7 @@ public class MonitorStateGUI extends JFrame implements Observer {
 		c.gridx = 1;
 		c.gridy = 0;
 		c.gridwidth = 1;
-		c.weightx = 0.5;
+		c.weightx = 1;
 		pane.add(server2, c);
 
 		JScrollPane server3 = new JScrollPane(serverDisplay3);
@@ -108,7 +108,7 @@ public class MonitorStateGUI extends JFrame implements Observer {
 		c.gridx = 2;
 		c.gridy = 0;
 		c.gridwidth = 1;
-		c.weightx = 0.5;
+		c.weightx = 1;
 		pane.add(server3, c);
 
 		JScrollPane server4 = new JScrollPane(serverDisplay4);
@@ -116,7 +116,7 @@ public class MonitorStateGUI extends JFrame implements Observer {
 		c.gridx = 3;
 		c.gridy = 0;
 		c.gridwidth = 1;
-		c.weightx = 0.5;
+		c.weightx = 1;
 		pane.add(server4, c);
 		getContentPane().add(pane, BorderLayout.NORTH);
 		setTitle("Monitor Queue");

@@ -38,7 +38,12 @@ public class CustomerQueue extends Observable {
 		String[] custIDs = new String[getQueueSize()];
 		int index = 0;
 		for (Iterator<ArrayList<Order>> i = queue.iterator(); i.hasNext();) {
-			custIDs[index] = i.next().get(0).getCustID();
+			ArrayList<Order> o = i.next();
+			String items = " items";
+			String pri = "Online";
+			if (o.size() == 1) { items = " item"; }
+			if (o.get(0).getPriority() == 0) { pri = "In-Store"; }
+			custIDs[index] = o.get(0).getCustID() + ", " + o.size() + items + ", " + pri;
 			index++;
 		}
 		return custIDs;
