@@ -179,7 +179,7 @@ public class AddOrdersView extends JFrame {
 
 		/**CONFIRM BUTTON*/
 		//format
-		buttonConfirm = new JButton("      Confirm Order      ");
+		buttonConfirm = new JButton("Confirm Order");
 		c.anchor = GridBagConstraints.LINE_START;
 		c.gridx = 3;
 		c.gridy = 6;
@@ -198,7 +198,7 @@ public class AddOrdersView extends JFrame {
 
 		/**REMOVE BUTTON*/
 		//Layout
-		buttonRemove = new JButton("      Remove Item      ");
+		buttonRemove = new JButton("Remove Item");
 		c.gridx = 3;
 		c.gridy = 6;
 		c.anchor = GridBagConstraints.LINE_END;
