@@ -29,11 +29,10 @@ public class MonitorStateController {
 	
 	public class StartSimualationListner implements ActionListener {
 		public void actionPerformed(ActionEvent e) {
-			
 				Qthread q = new Qthread();
 				Thread qThread = new Thread(q);
 				qThread.start();
-		
+				view.disableStartSim();
 		}
 	}
 	

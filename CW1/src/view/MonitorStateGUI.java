@@ -38,7 +38,7 @@ public class MonitorStateGUI extends JFrame implements Observer {
 	private ArrayList<JList<String>> serverDisplays;
 	public JButton addServerBtn;
 	public JButton removeServerBtn;
-	public JButton startSumulation;
+	public JButton startSimulation;
 	//Sim speed
 	public JSlider speedSlider;
 	public JLabel sliderLable;
@@ -142,12 +142,12 @@ public class MonitorStateGUI extends JFrame implements Observer {
 		pane.add(removeServerBtn, c);
 		c.fill = GridBagConstraints.NONE;
 		
-		startSumulation = new JButton("Start Sumulation");
+		startSimulation = new JButton("Start Sumulation");
 		c.fill = GridBagConstraints.HORIZONTAL;
 		c.anchor = GridBagConstraints.LAST_LINE_START;
 		c.gridx = 3;
 		c.gridy = 9;
-		pane.add(startSumulation, c);
+		pane.add(startSimulation, c);
 		c.fill = GridBagConstraints.NONE;
 
 		speedSlider = new JSlider(JSlider.HORIZONTAL, SPEED_MIN, SPEED_MAX, SPEED_INT);
@@ -186,12 +186,16 @@ public class MonitorStateGUI extends JFrame implements Observer {
 	}
 	
 	public void startSim(ActionListener e) {
-		startSumulation.addActionListener(e);
+		startSimulation.addActionListener(e);
 	}
 	
 	
 	public void removeServer(ActionListener e) {
 		removeServerBtn.addActionListener(e);
+	}
+	
+	public void disableStartSim() {
+		startSimulation.setEnabled(false);
 	}
 
 	//@ Andy - adding change listener to slider - Functionality handled in controller
