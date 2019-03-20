@@ -172,7 +172,7 @@ public class MonitorStateGUI extends JFrame implements Observer {
 
 
 
-		sliderLable = new JLabel("Thread Processing Speed: " + Integer.toString(Server.getThreadSleepTime()/1000)+ " Seconds");
+		sliderLable = new JLabel("Speed per item: " + Integer.toString(Server.getThreadSleepTime()/1000)+ " seconds");
 		c.fill = GridBagConstraints.HORIZONTAL;
 		c.anchor = GridBagConstraints.LAST_LINE_START;
 		c.gridx = 3;

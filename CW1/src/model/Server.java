@@ -56,7 +56,7 @@ public class Server extends Observable implements Runnable {
 				}
 				notifyUpdate();
 				f.store(currentOrder);
-				Thread.sleep(THREAD_SLEEP_TIME);
+				Thread.sleep(THREAD_SLEEP_TIME * currentOrder.size());
 			} catch (InterruptedException e) {
 				e.printStackTrace();
 			} catch (IOException e) {
