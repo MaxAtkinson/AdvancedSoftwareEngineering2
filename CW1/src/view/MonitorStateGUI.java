@@ -127,6 +127,7 @@ public class MonitorStateGUI extends JFrame implements Observer {
 		setResizable(false);
 		
 		addServerBtn = new JButton("Add Server");
+		addServerBtn.setEnabled(false);
 		c.fill = GridBagConstraints.HORIZONTAL;
 		c.anchor = GridBagConstraints.LAST_LINE_START;
 		c.gridx = 1;
@@ -135,6 +136,7 @@ public class MonitorStateGUI extends JFrame implements Observer {
 		c.fill = GridBagConstraints.NONE;
 		
 		removeServerBtn = new JButton("Remove Server");
+		removeServerBtn.setEnabled(false);
 		c.fill = GridBagConstraints.HORIZONTAL;
 		c.anchor = GridBagConstraints.LAST_LINE_START;
 		c.gridx = 2;
@@ -179,6 +181,11 @@ public class MonitorStateGUI extends JFrame implements Observer {
 		c.gridy = 3;
 		pane.add(sliderLable, c);
 		c.fill = GridBagConstraints.NONE;
+	}
+	
+	public void enableServerBtns() {
+		addServerBtn.setEnabled(true);
+		removeServerBtn.setEnabled(true);
 	}
 	
 	public void addServer(ActionListener e) {

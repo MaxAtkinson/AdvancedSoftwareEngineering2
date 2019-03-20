@@ -33,6 +33,7 @@ public class MonitorStateController {
 				Thread qThread = new Thread(q);
 				qThread.start();
 				view.disableStartSim();
+				view.enableServerBtns();
 		}
 	}
 	
