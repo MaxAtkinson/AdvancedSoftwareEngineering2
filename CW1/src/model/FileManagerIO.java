@@ -212,6 +212,17 @@ public class FileManagerIO {
 		return timesOrdered;
 	}
 
+	/* Used by writeReport() to find the number of online orders*/
+	private int numberOfOnlineOrders() {
+		int priorityOrders = 0;
+		for(Order p: processedOrders) {
+			if(p.getPriority() == 1) {
+				priorityOrders++;
+			}
+		}
+		return priorityOrders;
+	}
+	
 	/* Used by writeReport() to calculate the total income.*/
 	private float totalIncome() {
 		float totalIncome = 0;
@@ -249,6 +260,8 @@ public class FileManagerIO {
 		}
 		String totalIncome = String.format("The total income was %.2f\n", totalIncome());
 		fw.write(totalIncome);
+		String onlineOrders = String.format("The total number of online orders was %d\n", numberOfOnlineOrders());
+		fw.write(onlineOrders);
 		fw.close();
 	}
 }
