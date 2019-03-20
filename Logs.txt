@@ -1,13 +1,1 @@
-Timestamp 1553103719191: CUS107 was added to the queue (priority 0).
-Timestamp 1553103720198: CUS108 was added to the queue (priority 1).
-Processing order of FOOD131 for CUS108
-Timestamp 1553103721198: CUS109 was added to the queue (priority 0).
-Processing order of BEV113 for CUS107
-Processing order of BEV119 for CUS107
-Processing order of MEM118 for CUS107
-Processing order of MEM118 for CUS107
-Timestamp 1553103722198: CUS110 was added to the queue (priority 1).
-Processing order of MEM119 for CUS109
-Timestamp 1553103723198: CUS111 was added to the queue (priority 1).
-Processing order of MEM118 for CUS110
-Processing order of BEV119 for CUS111
+
