@@ -247,7 +247,8 @@ public class FileManagerIO {
 			String tableLine = String.format("|%-25s|%-10.2f|%-65s|%25d|\n", p.getName(), p.getPrice(), p.getDesc(), timesProductWasOrdered(p));
 			fw.write(tableLine);
 		}
-		fw.write("The total income was: " + totalIncome() + "\n");
+		String totalIncome = String.format("The total income was %.2f\n", totalIncome());
+		fw.write(totalIncome);
 		fw.close();
 	}
 }

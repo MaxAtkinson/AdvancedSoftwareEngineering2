@@ -35,16 +35,26 @@ public class Basket {
 		float result = calculateTotalPrice(pList);
 		int countMemoribilia = 0;
 		int countDrinks = 0;
+		int countFood = 0;
 		
 		// Count up instances of Drink and Mem
 		for (Product p: pList) {
 			if (p instanceof Memoribilia) countMemoribilia += 1;
 			else if (p instanceof Drink) countDrinks += 1;
+			else if (p instanceof Food) countFood +=1;
 		}
 		
 		// If 2+ Mem and 1+ Drink, 20% off
 		if (countMemoribilia >= 2 && countDrinks >= 1) {
 			result -= (0.2 * result);
+		}
+		
+		else if (countFood >= 2 && countDrinks >= 2) {
+			result -= (0.3 * result);
+		}
+		
+		else if (countFood == 1 && countDrinks == 1 && countMemoribilia == 1) {
+			result -= (0.1 * result);
 		}
 		
 		return result;
