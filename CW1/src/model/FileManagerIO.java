@@ -241,9 +241,11 @@ public class FileManagerIO {
 	public void writeReport(String filename) throws IOException {
 		FileWriter fw = new FileWriter (filename); 
 		fw.write("These are all the products on offer:\n");
+		String tableHeading = String.format("|%-25s|%-10s|%-65s|%25s|\n", "Name Of Product", "Price", "Description", "Times Product Was Ordered");
+		fw.write(tableHeading);
 		for (Product p: productsList.getProducts()) {
-			fw.write(p.getName() + "£" + p.getPrice() + " " + p.getDesc() + 
-					". This item was ordered a total of " + timesProductWasOrdered(p) + " times.\n");
+			String tableLine = String.format("|%-25s|%-10.2f|%-65s|%25d|\n", p.getName(), p.getPrice(), p.getDesc(), timesProductWasOrdered(p));
+			fw.write(tableLine);
 		}
 		fw.write("The total income was: " + totalIncome() + "\n");
 		fw.close();
