@@ -148,8 +148,13 @@ public class FileManagerIO {
 				inputLine = scanner.nextLine();
 				if (inputLine.isEmpty()) {
 					// one customer order finished
-					customerQueue.addCustomertoBuffer(priority, oneWholeOrder);
-					//Thread.sleep(500);
+					customerQueue.addCustomer(priority, oneWholeOrder);
+					try {
+						Thread.sleep(1500);
+					} catch (InterruptedException e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					}
 					oneWholeOrder = new ArrayList<>();
 				} else {
 					String part[] = inputLine.split(",");
@@ -159,7 +164,7 @@ public class FileManagerIO {
 				}
 			}
 			// add final order in file if there is not an empty line at end
-			customerQueue.addCustomertoBuffer(priority, oneWholeOrder);
+			customerQueue.addCustomer(priority, oneWholeOrder);
 			scanner.close();
 		}
 		catch (FileNotFoundException e) {

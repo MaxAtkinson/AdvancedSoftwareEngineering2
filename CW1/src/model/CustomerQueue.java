@@ -15,12 +15,8 @@ public class CustomerQueue extends Observable {
 		private final Object lock = new Object();
 	private static long lastCustID = 0;
 	private static int endOfPriorityIndex = 0;
-	//-----------
-	private static ArrayList<ArrayList<Order>> buffer;
 	
-	
-	
-	
+
 	private CustomerQueue() {}
 
 	public static CustomerQueue getInstance() {
@@ -28,28 +24,15 @@ public class CustomerQueue extends Observable {
 			firstInstance = new CustomerQueue();
 			queue = new ArrayList<>();
 			//--------------
-			buffer = new ArrayList<>();
 		}
 		return firstInstance;
 	}
 
-	public void popPush(ArrayList<ArrayList<Order>> in , ArrayList<ArrayList<Order>> out){
 		
-		ArrayList<Order> o = in.remove(0);
-		System.out.println(o);
-		out.add(o);
-		notifyUpdate();
-		
-	}
-	
-	
 	public ArrayList<ArrayList<Order>> getQueue() {
 		return queue;
 	}
 	
-	public ArrayList<ArrayList<Order>> getBuffer() {
-		return buffer;
-	}
 	
 	public int getQueueSize() {
 		return queue.size();
@@ -90,28 +73,6 @@ public class CustomerQueue extends Observable {
 		notifyUpdate();
 	}
 	
-	public void addCustomertoBuffer(int priority, ArrayList<Product> orderList) {
-		Date date = new Date();
-		long timeStamp = date.getTime();
-		ArrayList<Order> wholeOrder = new ArrayList<>();
-		lastCustID++;
-		String customerID = "CUS" + lastCustID;
-		for (Product p : orderList) {
-			Order o = new Order(timeStamp, p, customerID, priority);
-			wholeOrder.add(o); // insert after online orders
-		}
-//		if (priority == 1) {
-//			buffer.add(endOfPriorityIndex, wholeOrder);
-//			endOfPriorityIndex++;
-//		} else {
-			buffer.add(wholeOrder);
-	//	}
-		FileManagerIO.getInstance().logEvent(String.format("Timestamp %d: %s was added to the queue (priority %d).", timeStamp, customerID, priority));
-		notifyUpdate();
-		
-		//popPush(buffer, queue);
-		
-	}
 	
 	public void setLastCustomerID(long lastCustID) {
 		CustomerQueue.lastCustID = lastCustID;
@@ -135,11 +96,6 @@ public class CustomerQueue extends Observable {
 		}
 	}
 	
-	
-	public boolean checkBuffer(){
-		boolean full = buffer.isEmpty();
-		return full;
-	}
 	
 	public void notifyUpdate() {
 		setChanged();

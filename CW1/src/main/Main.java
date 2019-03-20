@@ -24,7 +24,6 @@ public class Main {
 		FileManagerIO f = FileManagerIO.getInstance();
 		f.readFromProductsFile("Products.csv");
 		f.readFromOrderFile("Orders.csv");
-		f.readFromNewOrderFile("NewOrders.csv");
 		new AddOrdersView();
 		
 		
