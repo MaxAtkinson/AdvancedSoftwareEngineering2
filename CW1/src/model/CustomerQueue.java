@@ -16,6 +16,7 @@ public class CustomerQueue extends Observable {
 	private static long lastCustID = 0;
 	private static int endOfPriorityIndex = 0;
 	
+
 	private CustomerQueue() {}
 
 	public static CustomerQueue getInstance() {
@@ -25,7 +26,6 @@ public class CustomerQueue extends Observable {
 		}
 		return firstInstance;
 	}
-	
 	
 	public ArrayList<ArrayList<Order>> getQueue() {
 		return queue;
