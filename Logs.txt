@@ -1,15 +1,28 @@
-Timestamp 1553157322372: CUS60 was added to the queue (priority 0).
-Timestamp 1553157323375: CUS61 was added to the queue (priority 1).
-Timestamp 1553157324376: CUS62 was added to the queue (priority 0).
-Timestamp 1553157325376: CUS63 was added to the queue (priority 1).
-Processing order of FOOD131 for CUS61
-Timestamp 1553157326377: CUS64 was added to the queue (priority 1).
-Processing order of MEM118 for CUS63
-Processing order of BEV119 for CUS64
-Processing order of BEV113 for CUS60
-Processing order of BEV119 for CUS60
-Processing order of MEM118 for CUS60
-Processing order of MEM118 for CUS60
-Processing order of MEM119 for CUS62
-Timestamp 1553157337046: CUS65 was added to the queue (priority 0).
-Processing order of BEV114 for CUS65
+Timestamp 1553169738670: CUS66 was added to the queue (priority 0).
+Timestamp 1553169739671: CUS67 was added to the queue (priority 1).
+Timestamp 1553169740672: CUS68 was added to the queue (priority 0).
+Timestamp 1553169746301: CUS69 was added to the queue (priority 1).
+Timestamp 1553169746673: CUS70 was added to the queue (priority 1).
+Timestamp 1553169752248: CUS71 was added to the queue (priority 0).
+Timestamp 1553169752674: CUS72 was added to the queue (priority 1).
+Timestamp 1553169756491: CUS73 was added to the queue (priority 0).
+Timestamp 1553169760563: CUS74 was added to the queue (priority 1).
+Processing order of FOOD131 for CUS67
+Processing order of BEV114 for CUS69
+Processing order of BEV114 for CUS69
+Processing order of MEM118 for CUS70
+Processing order of BEV119 for CUS72
+Processing order of BEV118 for CUS74
+Processing order of BEV118 for CUS74
+Processing order of BEV118 for CUS74
+Processing order of BEV118 for CUS74
+Processing order of BEV113 for CUS66
+Processing order of BEV119 for CUS66
+Processing order of MEM118 for CUS66
+Processing order of MEM118 for CUS66
+Processing order of MEM119 for CUS68
+Processing order of BEV118 for CUS71
+Processing order of BEV118 for CUS71
+Processing order of BEV118 for CUS71
+Processing order of BEV118 for CUS73
+Processing order of BEV118 for CUS73
