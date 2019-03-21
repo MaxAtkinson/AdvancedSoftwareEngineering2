@@ -84,13 +84,13 @@ public class Server extends Observable implements Runnable {
 				int sleep = currentOrder.size() > 0 ? currentOrder.size() : 1;
 				sleep = THREAD_SLEEP_TIME * sleep;
 				Thread.sleep(sleep);
+				cq.incrementProcessedOrders();
 			} catch (InterruptedException e) {
 				e.printStackTrace();
 			} catch (IOException e) {
 				e.printStackTrace();
 			}
 		}
-		notifyUpdate();
 	}
 	
 	/**

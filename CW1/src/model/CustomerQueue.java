@@ -18,7 +18,8 @@ public class CustomerQueue extends Observable {
 	private static ArrayList<ArrayList<Order>> queue;
 	private static long lastCustID = 0;
 	private static int endOfPriorityIndex = 0;
-	
+	private static int processedCount = 0;
+	private static int totalCount = 0;
 
 	/**
 	 * Empty Constructor for Singleton
@@ -95,6 +96,7 @@ public class CustomerQueue extends Observable {
 		} else {
 			queue.add(wholeOrder);
 		}
+		totalCount++;
 		FileManagerIO.getInstance().logEvent(String.format("Timestamp %d: %s was added to the queue (priority %d).", timeStamp, customerID, priority));
 		notifyUpdate();
 	}
@@ -133,6 +135,17 @@ public class CustomerQueue extends Observable {
 		}
 	}
 	
+	public void incrementProcessedOrders() {
+		notifyUpdate();
+		processedCount++;
+	}
+	
+	public boolean isFinished() {
+		if (processedCount == totalCount) {
+			return true;
+		}
+		return false;
+	}
 	
 	/**
 	 * Notify all observers of the queue.
