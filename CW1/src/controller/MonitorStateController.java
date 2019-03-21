@@ -34,7 +34,7 @@ public class MonitorStateController {
 		this.view.addSpeedListener(new SpeedListener());
 		this.view.addServer(new AddServerListener());
 		this.view.removeServer(new RemoveServerListener());
-		this.view.startSim(new StartSimualationListner());
+		this.view.startSim(new StartSimulationListner());
 	}
 	
 	
@@ -43,7 +43,7 @@ public class MonitorStateController {
 	 * by responding to start simulation button press. 
 	 * A thread is created to handle this.
 	 */
-	public class StartSimualationListner implements ActionListener {
+	public class StartSimulationListner implements ActionListener {
 		public void actionPerformed(ActionEvent e) {
 				Qthread q = new Qthread();
 				Thread qThread = new Thread(q);
