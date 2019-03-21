@@ -7,6 +7,7 @@ import java.awt.GridBagLayout;
 import java.awt.Insets;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Hashtable;
 import java.util.LinkedList;
@@ -28,6 +29,7 @@ import javax.swing.event.ListSelectionListener;
 
 import controller.MonitorStateController.SpeedListener;
 import model.CustomerQueue;
+import model.FileManagerIO;
 import model.Server;
 import order.Order;
 
@@ -298,6 +300,15 @@ public class MonitorStateGUI extends JFrame implements Observer {
 	@Override
 	public void update(Observable sender, Object data) {
 		if (sender == cq) {
+			if (cq.isFinished()) {
+				try {
+					FileManagerIO.getInstance().writeReport("Report.txt");
+					FileManagerIO.getInstance().dumpLogs();
+				} catch (IOException e1) {
+					e1.printStackTrace();
+				}
+				System.exit(0);
+			}
 			updateQueueDisplay(cq);
 		} else if (sender.getClass() == Server.class) {
 			Server s = (Server) sender;
