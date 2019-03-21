@@ -56,7 +56,8 @@ public class Server extends Observable implements Runnable {
 			try {
 				currentOrder = cq.getNextCustomer();
 				products.clear();
-				LAST_SLEEP_TIME = THREAD_SLEEP_TIME * currentOrder.size();
+				int val = currentOrder.size() > 0 ? currentOrder.size() : 1;
+				LAST_SLEEP_TIME = THREAD_SLEEP_TIME * val;
 				for (Order o : currentOrder) {
 					products.add(o.getProduct());
 				}
