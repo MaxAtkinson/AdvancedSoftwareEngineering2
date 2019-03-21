@@ -355,7 +355,6 @@ public class AddOrdersView extends JFrame {
 				} 
 				
 				else{
-				System.out.println("this is " + currentSetSelection);
 				for (Product p : productsList.getProducts()) {
 					if (p.getName().equals(currentSetSelection)) {
 						b.addProduct(p);
