@@ -23,8 +23,10 @@ public class ServerList {
 	}
 	
 	public void removeServer() {
-		Server s = servers.get(servers.size()-1);
-		s.setActive(false);
-		servers.remove(s);
+		if (servers.size() > 0) {
+			Server s = servers.get(servers.size()-1);
+			s.setActive(false);
+			servers.remove(s);
+		}
 	}
 }
