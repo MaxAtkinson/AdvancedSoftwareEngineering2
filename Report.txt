@@ -4,12 +4,12 @@ These are all the products on offer:
 |Steak pie                |10.99     |Steak in gravy sauce with encased in a shortcrust pastry         |                        3|
 |Pinapple Juice           |2.99      |Fresh pressed pinapple juice                                     |                       17|
 |Pulled Pork              |10.99     |Slow cooked pork pulled from the bone                            |                        2|
-|Bottled Water            |1.99      |Scottish spring water                                            |                        0|
+|Bottled Water            |1.99      |Scottish spring water                                            |                        1|
 |Kilted Doll              |4.99      |Small Kilted Doll                                                |                        0|
 |Fishcakes                |10.99     |Creamy Salmon fishcakes with a breadcrumb crust                  |                        1|
 |Coke                     |1.99      |An ice-cold coke                                                 |                        0|
 |Stovies                  |12.99     |Winter veg and gravy with beef filling                           |                        0|
-|Coffee                   |3.99      |Strong italian coffee                                            |                       28|
+|Coffee                   |3.99      |Strong italian coffee                                            |                       32|
 |Cottage pie              |12.99     |Traditional dish with mince filling and mashed potatoe topping   |                        0|
 |Tea                      |3.99      |Scottish breakfast tea                                           |                        1|
 |Celtic Rings             |14.99     |Silver rings twisted in ancient celtic knots                     |                        0|
@@ -19,15 +19,15 @@ These are all the products on offer:
 |Loch Ness Monster        |4.99      |Ceramic Loch Ness monster                                        |                        0|
 |Mini Bag Pipes           |4.99      |Ornamental bag pipes                                             |                        0|
 |Highland Cow Painting    |99.99     |Painting of Highland Cow by local artist                         |                        0|
-|Sparkling Water          |1.99      |Wonderful sparking scottish water                                |                       20|
-|Scottish Hip Flask       |19.99     |7oz hip flash with scottish engravings                           |                       17|
+|Sparkling Water          |1.99      |Wonderful sparking scottish water                                |                       22|
+|Scottish Hip Flask       |19.99     |7oz hip flash with scottish engravings                           |                       23|
 |Nessie Soft Toy          |9.99      |Soft toy made specially for children                             |                        0|
 |Pork Loin Casserole      |10.99     |Pork and veg in a thick gravy sauce                              |                        0|
-|Fish and Chips           |12.99     |Scottish haddock with thick cut chips                            |                       19|
+|Fish and Chips           |12.99     |Scottish haddock with thick cut chips                            |                       21|
 |Macaroni Cheese          |10.99     |Traditional macaroni chesse with a creamy cheese sauce           |                        4|
 |Irn Bru                  |1.99      |A classic scottish staple                                        |                        0|
 |Sgian Dubh               |24.99     |Scottish knife traditionally worn in a kilt sock                 |                        1|
 |Monopoly Scotland Edition|22.99     |Traditional game with Scottish place names                       |                        0|
-|Pint Glass               |2.99      |Local pup's pint glass                                           |                        9|
-The total income was 917.00
-The total number of online orders was 31
+|Pint Glass               |2.99      |Local pup's pint glass                                           |                       11|
+The total income was 1072.45
+The total number of online orders was 37
