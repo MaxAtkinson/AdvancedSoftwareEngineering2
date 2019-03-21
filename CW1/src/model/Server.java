@@ -83,8 +83,12 @@ public class Server extends Observable implements Runnable {
 		THREAD_SLEEP_TIME = threadSleepTime * 1000;
 	}
 	
-	public static int getThreadSleepTime(){
+	public static int getLastSleepTime(){
 		return LAST_SLEEP_TIME;
+	}
+	
+	public static int getThreadSleepTime(){
+		return THREAD_SLEEP_TIME;
 	}
 
 	public boolean isActive() {
