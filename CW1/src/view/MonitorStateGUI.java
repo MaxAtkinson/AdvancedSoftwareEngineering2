@@ -192,7 +192,7 @@ public class MonitorStateGUI extends JFrame implements Observer {
 		c.fill = GridBagConstraints.NONE;
 		
 		// START SUMULATION button formating
-		startSimulation = new JButton("Start Sumulation");
+		startSimulation = new JButton("Start Simulation");
 		c.fill = GridBagConstraints.HORIZONTAL;
 		c.anchor = GridBagConstraints.LAST_LINE_START;
 		c.gridx = 3;
@@ -251,7 +251,7 @@ public class MonitorStateGUI extends JFrame implements Observer {
 	}
 	
 	/**
-	 * Method adds actionListner to the START SUMULATION button.
+	 * Method adds actionListner to the START SIMULATION button.
 	 * 
 	 * 
 	 * @return Method does not return a value.
