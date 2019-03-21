@@ -8,9 +8,12 @@ import order.Basket;
 import order.Order;
 import order.Product;
 
+/**
+ * Object to represent a single server in a multi-server system.
+ * Each server runs on its own thread and processes orders.
+ */
 public class Server extends Observable implements Runnable {
 	private static int THREAD_SLEEP_TIME = 1000;
-	private static int LAST_SLEEP_TIME = THREAD_SLEEP_TIME;
 	private CustomerQueue cq = CustomerQueue.getInstance();
 	private FileManagerIO f = FileManagerIO.getInstance();
 	private int threadID;
@@ -18,6 +21,10 @@ public class Server extends Observable implements Runnable {
 	ArrayList<Product> products;
 	private boolean active;
 	
+	/**
+	 * Constructor to provide the server with a unique ID
+	 * @param threadID
+	 */
 	public Server (int threadID) {
 		this.threadID = threadID;
 		currentOrder = new ArrayList<>();
@@ -25,10 +32,18 @@ public class Server extends Observable implements Runnable {
 		active = true;
 	}
 	
+	/**
+	 * Get the ID of this server thread
+	 * @return ID of the server
+	 */
 	public int getId() {
 		return threadID;
 	}
 	
+	/**
+	 * Generate a string array that can be used for GUI
+	 * @return string array containing details of order or idle message
+	 */
 	public String[] displayOrder() {
 		if (currentOrder.size() > 0) {
 			String[] list = new String[currentOrder.size()+2];
@@ -46,9 +61,14 @@ public class Server extends Observable implements Runnable {
 		}
 	}
 	
+	/**
+	 * Setter to enable/disable the thread
+	 * @param active boolean determine the state of the server
+	 */
 	public void setActive(boolean active) {
 		this.active = active;
 	}
+
 
 	@Override
 	public void run() {
@@ -56,14 +76,14 @@ public class Server extends Observable implements Runnable {
 			try {
 				currentOrder = cq.getNextCustomer();
 				products.clear();
-				int val = currentOrder.size() > 0 ? currentOrder.size() : 1;
-				LAST_SLEEP_TIME = THREAD_SLEEP_TIME * val;
 				for (Order o : currentOrder) {
 					products.add(o.getProduct());
 				}
 				notifyUpdate();
 				f.store(currentOrder);
-				Thread.sleep(LAST_SLEEP_TIME);
+				int sleep = currentOrder.size() > 0 ? currentOrder.size() : 1;
+				sleep = THREAD_SLEEP_TIME * sleep;
+				Thread.sleep(sleep);
 			} catch (InterruptedException e) {
 				e.printStackTrace();
 			} catch (IOException e) {
@@ -73,24 +93,35 @@ public class Server extends Observable implements Runnable {
 		notifyUpdate();
 	}
 	
+	/**
+	 * Notify all observers of this object
+	 */
 	public void notifyUpdate() {
 		setChanged();
 		notifyObservers(this);
 		clearChanged();
 	}
 
+	/**
+	 * Set the time per item that all servers take to process
+	 * @param threadSleepTime used as a factor for determining sleep time
+	 */
 	public static void setThreadSleepTime(int threadSleepTime) {
 		THREAD_SLEEP_TIME = threadSleepTime * 1000;
 	}
 	
-	public static int getLastSleepTime(){
-		return LAST_SLEEP_TIME;
-	}
-	
+	/**
+	 * Get the time it takes for all servers to process each item
+	 * @return thread sleep time
+	 */
 	public static int getThreadSleepTime(){
 		return THREAD_SLEEP_TIME;
 	}
 
+	/**
+	 * Checker to determine the state of the server
+	 * @return
+	 */
 	public boolean isActive() {
 		return active;
 	}

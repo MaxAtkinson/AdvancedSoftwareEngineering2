@@ -9,16 +9,26 @@ import java.util.Observable;
 import order.Order;
 import order.Product;
 
+/**
+ * Wrapper class to hold the queue of customers to be processed by
+ * the servers.
+ */
 public class CustomerQueue extends Observable {
 	private static CustomerQueue firstInstance = null;
 	private static ArrayList<ArrayList<Order>> queue;
-	private final Object lock = new Object();
 	private static long lastCustID = 0;
 	private static int endOfPriorityIndex = 0;
 	
 
+	/**
+	 * Empty Constructor for Singleton
+	 */
 	private CustomerQueue() {}
 
+	/**
+	 * Get the Singleton instance or create a new one first call
+	 * @return instance of CustomerQueue
+	 */
 	public static CustomerQueue getInstance() {
 		if(firstInstance == null) {
 			firstInstance = new CustomerQueue();
@@ -27,14 +37,27 @@ public class CustomerQueue extends Observable {
 		return firstInstance;
 	}
 	
+	/**
+	 * Get the ArrayList of whole orders
+	 * @return queue of orders
+	 */
 	public ArrayList<ArrayList<Order>> getQueue() {
 		return queue;
 	}
 	
+	/**
+	 * Get the size of the queue in terms of number of customers
+	 * @return size of queue
+	 */
 	public int getQueueSize() {
 		return queue.size();
 	}
 	
+	/**
+	 * Get the details of the queue including customer ID, number of items, and priority
+	 * Synchronized to prevent concurrent access
+	 * @return string array, each element containing ID, number of items, and priority
+	 */
 	public synchronized String[] getCustomerIDs() {
 		String[] custIDs = new String[getQueueSize()];
 		int index = 0;
@@ -50,6 +73,12 @@ public class CustomerQueue extends Observable {
 		return custIDs;
 	}
 	
+	/**
+	 * Add a customer to the queue, inserting behind the last online customer if an online
+	 * order is placed, otherwise added to the end of the queue.
+	 * @param priority whether an order is placed in-store or online
+	 * @param orderList the full order of Order objects that a single customer placed
+	 */
 	public synchronized void addCustomer(int priority, ArrayList<Product> orderList) {
 		Date date = new Date();
 		long timeStamp = date.getTime();
@@ -70,14 +99,27 @@ public class CustomerQueue extends Observable {
 		notifyUpdate();
 	}
 	
+	/**
+	 * Sets the last customer customer ID on file.
+	 * Called by FileManagerIO.
+	 * @param lastCustID the last customer ID on file.
+	 */
 	public void setLastCustomerID(long lastCustID) {
 		CustomerQueue.lastCustID = lastCustID;
 	}
 
+	/**
+	 * Check if queue is empty.
+	 * @return boolean of queue being empty
+	 */
 	public boolean isEmpty() {
 		return queue.isEmpty();
 	}
 	
+	/**
+	 * Get the whole order of the next customer in the queue.
+	 * @return ArrayList<Order> of next customer
+	 */
 	public synchronized ArrayList<Order> getNextCustomer(){
 		if (isEmpty()) {
 			return new ArrayList<Order>();
@@ -92,6 +134,9 @@ public class CustomerQueue extends Observable {
 	}
 	
 	
+	/**
+	 * Notify all observers of the queue.
+	 */
 	public void notifyUpdate() {
 		setChanged();
 		notifyObservers(this);
