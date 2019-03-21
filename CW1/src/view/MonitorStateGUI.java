@@ -302,7 +302,6 @@ public class MonitorStateGUI extends JFrame implements Observer {
 		} else if (sender.getClass() == Server.class) {
 			Server s = (Server) sender;
 			updateServerDisplay(s);
-			if (cq.isEmpty()) clearDisplays();
 		}
 	}
 
@@ -316,25 +315,6 @@ public class MonitorStateGUI extends JFrame implements Observer {
 		String[] custIDs = queue.getCustomerIDs();
 		queueList.setListData(custIDs);
 	}
-
-	/**
-	 * Method clears the displays on the GUI.
-	 * 
-	 * 
-	 * @return Method does not return a value.
-	 */
-	public void clearDisplays() {
-		try {
-			Thread.sleep(Server.getThreadSleepTime());
-		} catch (InterruptedException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		for (JList<String> server : serverDisplays) {
-			server.setListData(INITIAL_DISPLAY);
-		}
-	}
-	
 	
 	/**
 	 * Method updates the GUI server displays. 
