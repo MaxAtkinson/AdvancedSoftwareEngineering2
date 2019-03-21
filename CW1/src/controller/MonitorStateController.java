@@ -65,7 +65,7 @@ public class MonitorStateController {
 		public void stateChanged(ChangeEvent e) {
 			int speed = view.speedSlider.getValue();
 			Server.setThreadSleepTime(speed);
-			view.sliderLable.setText("Thread Processing Speed: " + Integer.toString(Server.getThreadSleepTime()/1000)+ " Seconds"); 
+			view.sliderLable.setText("Speed per item: " + Integer.toString(Server.getThreadSleepTime()/1000)+ " seconds"); 
 		}
 		
 	}
