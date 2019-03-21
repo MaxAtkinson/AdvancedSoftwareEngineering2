@@ -1,12 +1,28 @@
-Timestamp 1552666512547: CUS10 was added to the queue (priority 0).
-Timestamp 1552666512550: CUS11 was added to the queue (priority 1).
-Timestamp 1552666512551: CUS12 was added to the queue (priority 0).
-Timestamp 1552666512551: CUS13 was added to the queue (priority 1).
-Timestamp 1552666512552: CUS14 was added to the queue (priority 1).
-Processing order of FOOD131 for CUS11
-Processing order of MEM118 for CUS13
-Processing order of BEV119 for CUS14
-Processing order of BEV113 for CUS10
-Processing order of BEV119 for CUS10
-Processing order of BEV117 for CUS10
-Processing order of MEM119 for CUS12
+Timestamp 1553169738670: CUS66 was added to the queue (priority 0).
+Timestamp 1553169739671: CUS67 was added to the queue (priority 1).
+Timestamp 1553169740672: CUS68 was added to the queue (priority 0).
+Timestamp 1553169746301: CUS69 was added to the queue (priority 1).
+Timestamp 1553169746673: CUS70 was added to the queue (priority 1).
+Timestamp 1553169752248: CUS71 was added to the queue (priority 0).
+Timestamp 1553169752674: CUS72 was added to the queue (priority 1).
+Timestamp 1553169756491: CUS73 was added to the queue (priority 0).
+Timestamp 1553169760563: CUS74 was added to the queue (priority 1).
+Processing order of FOOD131 for CUS67
+Processing order of BEV114 for CUS69
+Processing order of BEV114 for CUS69
+Processing order of MEM118 for CUS70
+Processing order of BEV119 for CUS72
+Processing order of BEV118 for CUS74
+Processing order of BEV118 for CUS74
+Processing order of BEV118 for CUS74
+Processing order of BEV118 for CUS74
+Processing order of BEV113 for CUS66
+Processing order of BEV119 for CUS66
+Processing order of MEM118 for CUS66
+Processing order of MEM118 for CUS66
+Processing order of MEM119 for CUS68
+Processing order of BEV118 for CUS71
+Processing order of BEV118 for CUS71
+Processing order of BEV118 for CUS71
+Processing order of BEV118 for CUS73
+Processing order of BEV118 for CUS73

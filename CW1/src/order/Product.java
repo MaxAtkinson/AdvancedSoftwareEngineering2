@@ -11,6 +11,13 @@ public class Product {
 	private float price;
 	private String id;
 	
+	/**
+	 * Constructor
+	 * @param name: The name of the product
+	 * @param desc: The product description
+	 * @param price: The price of the product
+	 * @param id: The product ID
+	 */
 	public Product(String name, String desc, float price, String id) {
 		this.name = name;
 		this.desc = desc;
@@ -18,25 +25,42 @@ public class Product {
 		this.id = id;
 	}
 	
-	/* Getters */
-	
+	/**
+	 * Getter for name
+	 * @return: The product name
+	 */
 	public String getName() {
 		return name;
 	}
 
+	/**
+	 * Getter for description
+	 * @return: The product description
+	 */
 	public String getDesc() {
 		return desc;
 	}
 
+	/**
+	 * Getter for price
+	 * @return: The product price
+	 */
 	public float getPrice() {
 		return price;
 	}
 
+	/**
+	 * Getter for ID
+	 * @return: The product ID
+	 */
 	public String getId() {
 		return id;
 	}
-	
-	//added in for GUI
+
+	/**
+	 * String serialization
+	 * @return: A string serialization of the product
+	 */
 	public String toString() { 
 	    return name;   		
 	} 

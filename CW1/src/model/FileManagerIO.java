@@ -23,8 +23,15 @@ public class FileManagerIO {
 	//Making this a singleton class
 	private static volatile FileManagerIO instance = null;
 	
+	/**
+	 * Empty Constructor for Singleton
+	 */
 	private FileManagerIO() {}
 	
+	/** 
+	 * Get the Singleton instance or create a new one first call
+	 * @return instance of FileManagerIO
+	 */
 	public static FileManagerIO getInstance() {
 		if(instance == null) {
 			synchronized (FileManagerIO.class) {
@@ -39,22 +46,39 @@ public class FileManagerIO {
 	private ProductsList productsList = ProductsList.getInstance();
 	private StringBuilder logs = new StringBuilder();
 
-	/* Getters are used in Junit tests to ensure the effectiveness of private methods elsewhere in the class. */
+	/**
+	 * Get the size of existing orders read from file plus those added from GUI
+	 * @return size of existing orders
+	 */
 	public int getSizeOfExistingOrders() {
 		return processedOrders.size();
 	}
 
+	/**
+	 * Append an event description to a string builder of logs to store later.
+	 * @param eventDescription string describing event
+	 */
 	public void logEvent(String eventDescription) {
 		logs.append(eventDescription + "\n");
 	}
 	
+	/**
+	 * Write logs to logs file.
+	 * @throws IOException
+	 */
 	public void dumpLogs() throws IOException {
 		FileWriter fw = new FileWriter ("Logs.txt"); 
 		fw.write(logs.toString());
 		fw.close();
 	}
 
-	/* Used to read in a CSV with product information. Passes this read information to the processMenuLine() method.*/
+	/**
+	 * Used to read in a CSV with product information. 
+	 * Passes this read information to the processMenuLine() method.
+	 * @param fileName products file
+	 * @throws InvalidProductPriceException
+	 * @throws InvalidProductIdentifierException
+	 */
 	public void readFromProductsFile(String fileName) throws InvalidProductPriceException, InvalidProductIdentifierException {
 		File file = new File(fileName);
 		try {
@@ -72,8 +96,14 @@ public class FileManagerIO {
 			System.out.print("File: " + fileName + " cannot be found.");
 		}
 	}
-
-	/* Takes in lines from the CSV and creates objects of type Drink, Food, or Memorabilia */
+	
+	/**
+	 * Takes in lines from the CSV and creates objects of type Drink, Food, or Memorabilia
+	 * @param inputLine line containing the product details
+	 * @throws NumberFormatException
+	 * @throws InvalidProductPriceException
+	 * @throws InvalidProductIdentifierException
+	 */
 	private void processMenuLine(String inputLine) throws NumberFormatException, InvalidProductPriceException, InvalidProductIdentifierException {
 		String part[] = inputLine.split(",");
 		String id = part[part.length-1];
@@ -98,7 +128,12 @@ public class FileManagerIO {
 
 		}
 	}
-	/* Used to read in a CSV with previous orders information. Passes this read information to the processOrderLine() method.*/	
+	
+	/**
+	 * Used to read in a CSV with previous orders information. 
+	 * Passes this read information to the processOrderLine() method.
+	 * @param fileName existing orders file
+	 */
 	public void readFromOrderFile(String fileName) {
 		File file = new File(fileName);
 		try {
@@ -118,7 +153,11 @@ public class FileManagerIO {
 		}
 	}
 
-	/* Takes in lines from the CSV and creates objects of type Order placing them in the ArrayList existing orders.*/
+	/**
+	 * Takes in lines from the CSV and creates objects of type Order
+	 * placing them in the ArrayList existing orders.
+	 * @param inputLine line containing the order details
+	 */
 	private void processOrderLine(String inputLine) {
 		try {
 			String part[] = inputLine.split(",");
@@ -136,7 +175,13 @@ public class FileManagerIO {
 		}
 	}
 
-	/* Used to read in a CSV with previous orders information. Passes this read information to the processOrderLine() method.*/	
+	/* */	
+	/**
+	 * Used to read in new orders ready to join the queue. 
+	 * Adds new order to queue uses CustomerQueue Singleton.
+	 * Sleeps after every line read to simulate gradual joining of queue.
+	 * @param fileName new orders file
+	 */
 	public void readFromNewOrderFile(String fileName) {
 		File file = new File(fileName);
 		try {
@@ -149,7 +194,7 @@ public class FileManagerIO {
 				if (inputLine.isEmpty()) {
 					// one customer order finished
 					customerQueue.addCustomer(priority, oneWholeOrder);
-					Thread.sleep(500);
+					Thread.sleep(Server.getThreadSleepTime());
 					oneWholeOrder = new ArrayList<>();
 				} else {
 					String part[] = inputLine.split(",");
@@ -165,12 +210,17 @@ public class FileManagerIO {
 		catch (FileNotFoundException e) {
 			System.out.print("File: " + fileName + " cannot be found.");
 		} catch (InterruptedException e) {
+			// TODO Auto-generated catch block
 			e.printStackTrace();
-		}
+		} 
 	}
 	
 
 	/* Creates a new customer idea for new orders passed from the GUI.*/
+	/**
+	 * Retrieve the last customer ID from the processed orders and set
+	 * the customer queue's last ID
+	 */
 	private void setLastCustomerID() {
 		if (processedOrders.size()!=0) {
 			Order lastOrder = processedOrders.get(processedOrders.size()-1);
@@ -180,7 +230,11 @@ public class FileManagerIO {
 		}
 	}
 
-	/* Writes new orders to the Orders.csv*/
+	/**
+	 * Write all processed orders to file.
+	 * @param o Order object written as line to file.
+	 * @throws IOException
+	 */
 	public void store(Order o) throws IOException {
 		FileWriter fw = new FileWriter("Orders.csv", true);
 		String timestamp = Long.toString(o.getTimestamp());
@@ -192,6 +246,11 @@ public class FileManagerIO {
 		fw.close();
 	}
 	
+	/**
+	 * Write a full order to file using the store(Order o) method.
+	 * @param orders ArrayList<Order> a customer's full order
+	 * @throws IOException
+	 */
 	public synchronized void store(ArrayList<Order> orders) throws IOException {
 		for (Order o : orders) {
 			store(o);
@@ -200,7 +259,11 @@ public class FileManagerIO {
 	}
 
 
-	/* Used by writeReport() to find the number of times a product was ordered*/
+	/**
+	 * Used by writeReport() to find the number of times a product was ordered
+	 * @param p Product to search for.
+	 * @return
+	 */
 	private int timesProductWasOrdered(Product p) {
 		int timesOrdered = 0;
 		for(Order o: processedOrders) {
@@ -211,7 +274,25 @@ public class FileManagerIO {
 		return timesOrdered;
 	}
 
-	/* Used by writeReport() to calculate the total income.*/
+	
+	/**
+	 * Calculate the number of online orders.
+	 * @return number of online orders.
+	 */
+	private int numberOfOnlineOrders() {
+		int priorityOrders = 0;
+		for(Order p: processedOrders) {
+			if(p.getPriority() == 1) {
+				priorityOrders++;
+			}
+		}
+		return priorityOrders;
+	}
+	
+	/**
+	 * Used by WriteReport() method to calculate income.
+	 * @return total income
+	 */
 	private float totalIncome() {
 		float totalIncome = 0;
 		ArrayList<Product> oneCustomer = new ArrayList<>();
@@ -236,15 +317,25 @@ public class FileManagerIO {
 		return totalIncome;
 	}
 
-	/* Writes the final report to file. Called by the GUI on clicking the 'QUIT' button.*/
+	/**
+	 * Write the report to file, containing information of products, number of times
+	 * they are ordered, total income, and number of online orders.
+	 * @param filename report file to write to
+	 * @throws IOException
+	 */
 	public void writeReport(String filename) throws IOException {
 		FileWriter fw = new FileWriter (filename); 
 		fw.write("These are all the products on offer:\n");
+		String tableHeading = String.format("|%-25s|%-10s|%-65s|%25s|\n", "Name Of Product", "Price", "Description", "Times Product Was Ordered");
+		fw.write(tableHeading);
 		for (Product p: productsList.getProducts()) {
-			fw.write(p.getName() + "£" + p.getPrice() + " " + p.getDesc() + 
-					". This item was ordered a total of " + timesProductWasOrdered(p) + " times.\n");
+			String tableLine = String.format("|%-25s|%-10.2f|%-65s|%25d|\n", p.getName(), p.getPrice(), p.getDesc(), timesProductWasOrdered(p));
+			fw.write(tableLine);
 		}
-		fw.write("The total income was: " + totalIncome() + "\n");
+		String totalIncome = String.format("The total income was %.2f\n", totalIncome());
+		fw.write(totalIncome);
+		String onlineOrders = String.format("The total number of online orders was %d\n", numberOfOnlineOrders());
+		fw.write(onlineOrders);
 		fw.close();
 	}
 }
