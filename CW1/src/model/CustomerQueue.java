@@ -12,7 +12,7 @@ import order.Product;
 public class CustomerQueue extends Observable {
 	private static CustomerQueue firstInstance = null;
 	private static ArrayList<ArrayList<Order>> queue;
-		private final Object lock = new Object();
+	private final Object lock = new Object();
 	private static long lastCustID = 0;
 	private static int endOfPriorityIndex = 0;
 	
@@ -78,11 +78,10 @@ public class CustomerQueue extends Observable {
 		return queue.isEmpty();
 	}
 	
-	public ArrayList<Order> getNextCustomer() throws InterruptedException {
-		synchronized (lock) {
-			while(queue.isEmpty()) {
-				lock.wait();
-			}
+	public synchronized ArrayList<Order> getNextCustomer(){
+		if (isEmpty()) {
+			return new ArrayList<Order>();
+		} else {
 			if (queue.get(0).get(0).getPriority() == 1) {
 				endOfPriorityIndex--;
 			}
